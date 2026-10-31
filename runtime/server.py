@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
-"""Minimal authenticated coordinator API; Python standard library only."""
-import hashlib
+"""Authenticated single-owner coordinator API; Python standard library only."""
 import hmac
 import json
 import os
+import re
 import sqlite3
 import uuid
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from pathlib import Path
+from urllib.parse import urlsplit
 
 DB_PATH = os.environ.get("ORCHESTRATOR_DB", "orchestrator.sqlite3")
 TOKEN = os.environ.get("ORCHESTRATOR_OWNER_TOKEN", "")
 HOST = os.environ.get("ORCHESTRATOR_HOST", "127.0.0.1")
 PORT = int(os.environ.get("ORCHESTRATOR_PORT", "8080"))
 MAX_BODY = 1_000_000
+VALID_PRIORITIES = {"low", "normal", "high", "urgent"}
+VALID_RESULTS = {"completed", "partial", "blocked", "failed"}
+ID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
 
 def now():
     return datetime.now(timezone.utc).isoformat()
@@ -22,6 +25,7 @@ def now():
 def connect():
     db = sqlite3.connect(DB_PATH, timeout=15)
     db.row_factory = sqlite3.Row
+    db.execute("PRAGMA foreign_keys=ON")
     db.execute("PRAGMA journal_mode=WAL")
     return db
 
@@ -49,27 +53,32 @@ def initialize():
 
 def record(db, action, resource_id, detail):
     db.execute("INSERT INTO audit(actor,action,resource_id,at,detail_json) VALUES(?,?,?,?,?)",
-               ("owner_or_worker", action, resource_id, now(), json.dumps(detail)))
+               ("owner_or_worker", action, resource_id, now(),
+                json.dumps(detail, ensure_ascii=False, separators=(",", ":"))))
 
 def submit_instruction(payload):
     text = payload.get("text")
-    if not isinstance(text, str) or not text.strip():
-        raise ValueError("text is required")
+    if not isinstance(text, str) or not text.strip() or len(text) > 20000:
+        raise ValueError("text must contain 1-20000 characters")
     key = payload.get("idempotency_key") or str(uuid.uuid4())
     if not isinstance(key, str) or not key.strip() or len(key) > 200:
         raise ValueError("invalid idempotency_key")
     origin = payload.get("origin", "bridge")
     project = payload.get("project")
     priority = payload.get("priority", "normal")
-    if priority not in ("low", "normal", "high", "urgent"):
+    if not isinstance(origin, str) or not origin.strip() or len(origin) > 100:
+        raise ValueError("invalid origin")
+    if project is not None and (not isinstance(project, str) or len(project) > 100):
+        raise ValueError("invalid project")
+    if priority not in VALID_PRIORITIES:
         raise ValueError("invalid priority")
     with connect() as db:
         existing = db.execute("SELECT * FROM instructions WHERE idempotency_key=?", (key,)).fetchone()
         if existing:
             return dict(existing), True
         ident, stamp = str(uuid.uuid4()), now()
-        db.execute("""INSERT INTO instructions VALUES(?,?,?,?,?,?,?,?,?)""",
-                   (ident, key, str(origin)[:100], text.strip(), project, priority, "received", stamp, stamp))
+        db.execute("INSERT INTO instructions VALUES(?,?,?,?,?,?,?,?,?)",
+                   (ident, key, origin.strip(), text.strip(), project, priority, "received", stamp, stamp))
         task_id = str(uuid.uuid4())
         db.execute("INSERT INTO tasks(id,instruction_id,title,status,created_at,updated_at) VALUES(?,?,?,?,?,?)",
                    (task_id, ident, text.strip()[:160], "queued", stamp, stamp))
@@ -77,40 +86,56 @@ def submit_instruction(payload):
         return dict(db.execute("SELECT * FROM instructions WHERE id=?", (ident,)).fetchone()), False
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "OrquestadorCentral/0.1"
+    server_version = "OrquestadorCentral"
+    sys_version = ""
+
     def send_json(self, code, obj):
-        raw = json.dumps(obj, ensure_ascii=False).encode()
+        raw = json.dumps(obj, ensure_ascii=False).encode("utf-8")
         self.send_response(code)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(raw)))
         self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Content-Type-Options", "nosniff")
         self.end_headers()
         self.wfile.write(raw)
 
+    def send_empty(self, code):
+        self.send_response(code)
+        self.send_header("Content-Length", "0")
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+
     def authorized(self):
         supplied = self.headers.get("Authorization", "")
-        expected = "Bearer " + TOKEN
-        return bool(TOKEN) and hmac.compare_digest(supplied, expected)
+        return bool(TOKEN) and hmac.compare_digest(supplied, "Bearer " + TOKEN)
 
     def body(self):
-        size = int(self.headers.get("Content-Length", "0"))
+        raw_size = self.headers.get("Content-Length")
+        if raw_size is None or not raw_size.isdigit():
+            raise ValueError("valid Content-Length required")
+        size = int(raw_size)
         if size < 1 or size > MAX_BODY:
             raise ValueError("body size invalid")
-        data = json.loads(self.rfile.read(size))
+        try:
+            data = json.loads(self.rfile.read(size))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise ValueError("invalid JSON body") from exc
         if not isinstance(data, dict):
             raise ValueError("JSON object required")
         return data
 
     def do_GET(self):
-        if self.path == "/health":
-            return self.send_json(200, {"status": "ok", "service": "orquestador-central", "version": "0.1.0"})
+        path = urlsplit(self.path).path
+        if path == "/health":
+            return self.send_json(200, {"status": "ok", "service": "orquestador-central", "version": "0.1.1"})
         if not self.authorized():
             return self.send_json(401, {"error": "unauthorized"})
-        if self.path.startswith("/v1/instructions/"):
-            ident = self.path.rsplit("/", 1)[-1]
+        match = re.fullmatch(r"/v1/instructions/([0-9a-f-]{36})", path)
+        if match:
+            ident = match.group(1)
             with connect() as db:
                 row = db.execute("SELECT * FROM instructions WHERE id=?", (ident,)).fetchone()
-                tasks = db.execute("SELECT * FROM tasks WHERE instruction_id=?", (ident,)).fetchall()
+                tasks = db.execute("SELECT * FROM tasks WHERE instruction_id=? ORDER BY created_at", (ident,)).fetchall()
             if not row:
                 return self.send_json(404, {"error": "not_found"})
             return self.send_json(200, {"instruction": dict(row), "tasks": [dict(x) for x in tasks]})
@@ -120,41 +145,52 @@ class Handler(BaseHTTPRequestHandler):
         if not self.authorized():
             return self.send_json(401, {"error": "unauthorized"})
         try:
+            path = urlsplit(self.path).path
             payload = self.body()
-            if self.path == "/v1/instructions":
+            if path == "/v1/instructions":
                 row, duplicate = submit_instruction(payload)
                 return self.send_json(200 if duplicate else 201, {"instruction": row, "duplicate": duplicate})
-            if self.path == "/v1/tasks/claim":
-                worker = str(payload.get("worker", "worker"))[:100]
+            if path == "/v1/tasks/claim":
+                worker = payload.get("worker", "worker")
+                if not isinstance(worker, str) or not worker.strip() or len(worker) > 100:
+                    raise ValueError("invalid worker")
                 with connect() as db:
                     db.execute("BEGIN IMMEDIATE")
-                    task = db.execute("SELECT * FROM tasks WHERE status='queued' ORDER BY created_at LIMIT 1").fetchone()
+                    task = db.execute("SELECT * FROM tasks WHERE status='queued' ORDER BY created_at,id LIMIT 1").fetchone()
                     if not task:
-                        return self.send_json(204, {})
+                        self.send_empty(204)
+                        return
                     stamp = now()
-                    db.execute("UPDATE tasks SET status='running',updated_at=? WHERE id=?", (stamp, task["id"]))
-                    db.execute("UPDATE instructions SET status='running',updated_at=? WHERE id=?", (stamp, task["instruction_id"]))
-                    record(db, "task.claimed", task["id"], {"worker": worker})
+                    db.execute("UPDATE tasks SET status='running',updated_at=? WHERE id=? AND status='queued'",
+                               (stamp, task["id"]))
+                    db.execute("UPDATE instructions SET status='running',updated_at=? WHERE id=?",
+                               (stamp, task["instruction_id"]))
+                    record(db, "task.claimed", task["id"], {"worker": worker.strip()})
                     claimed = dict(db.execute("SELECT * FROM tasks WHERE id=?", (task["id"],)).fetchone())
-                return self.send_json(200, {"task": claimed, "worker": worker})
-            if self.path.startswith("/v1/tasks/") and self.path.endswith("/result"):
-                task_id = self.path.split("/")[-2]
+                return self.send_json(200, {"task": claimed, "worker": worker.strip()})
+            match = re.fullmatch(r"/v1/tasks/([0-9a-f-]{36})/result", path)
+            if match:
+                task_id = match.group(1)
                 status = payload.get("status")
-                if status not in ("completed", "partial", "blocked", "failed"):
+                if status not in VALID_RESULTS:
                     raise ValueError("invalid result status")
+                evidence = json.dumps(payload, ensure_ascii=False)
                 with connect() as db:
+                    db.execute("BEGIN IMMEDIATE")
                     task = db.execute("SELECT * FROM tasks WHERE id=?", (task_id,)).fetchone()
                     if not task:
                         return self.send_json(404, {"error": "not_found"})
+                    if task["status"] != "running":
+                        return self.send_json(409, {"error": "task_not_running", "current_status": task["status"]})
                     stamp = now()
                     db.execute("UPDATE tasks SET status=?,result_json=?,updated_at=? WHERE id=?",
-                               (status, json.dumps(payload, ensure_ascii=False), stamp, task_id))
+                               (status, evidence, stamp, task_id))
                     db.execute("UPDATE instructions SET status=?,updated_at=? WHERE id=?",
                                (status, stamp, task["instruction_id"]))
                     record(db, "task.result", task_id, payload)
                 return self.send_json(200, {"task_id": task_id, "status": status})
             return self.send_json(404, {"error": "not_found"})
-        except (ValueError, json.JSONDecodeError) as exc:
+        except ValueError as exc:
             return self.send_json(400, {"error": str(exc)})
         except Exception:
             return self.send_json(500, {"error": "internal_error"})
