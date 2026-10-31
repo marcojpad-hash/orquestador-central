@@ -1,0 +1,31 @@
+version: 1
+projects:
+  - id: motor-u6
+    name: Motor U6
+    repository: marcojpad-hash/motor-u6-storage
+    status: known
+    access: pending_explicit_installation
+    protected: true
+    rules:
+      - preserve_canonical_files
+      - no_unapproved_changes_to_engine
+      - distinguish_executed_results_from_hypotheses
+  - id: capcot
+    name: CAPCOT
+    repository: marcojpad-hash/capcot-capsulas-imaginantes
+    status: known
+    access: pending_explicit_installation
+    rules:
+      - respect_editorial_handoff
+      - textual_preproduction_role_unless_updated
+      - preserve_protected_branches_and_paths
+  - id: imaginantes
+    name: Imaginantes
+    repository: null
+    status: needs_repository_mapping
+    access: not_configured
+  - id: general
+    name: Ideas e investigación general
+    repository: marcojpad-hash/orquestador-central
+    status: active
+    access: current_repository_only
