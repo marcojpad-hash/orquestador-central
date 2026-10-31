@@ -1,0 +1,28 @@
+version: 1
+agents:
+  - id: coordinator
+    name: Orquestador Central
+    provider: provider_neutral
+    specialty: orchestration
+    status: design_only
+    permissions: L1
+  - id: motor-u6-specialist
+    name: Especialista Motor U6
+    provider: dynamically_selected
+    specialty: technical_audit_and_engineering
+    status: unassigned
+  - id: capcot-research
+    name: Investigador CAPCOT
+    provider: dynamically_selected
+    specialty: research_and_editorial_preproduction
+    status: unassigned
+  - id: imaginantes-production
+    name: Especialista Imaginantes
+    provider: dynamically_selected
+    specialty: audiovisual_production_and_release
+    status: unassigned
+  - id: general-research
+    name: Investigación general
+    provider: dynamically_selected
+    specialty: research_and_analysis
+    status: unassigned
