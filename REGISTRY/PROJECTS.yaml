@@ -1,31 +1,52 @@
-version: 1
+version: 2
 projects:
+  - id: orchestrator
+    name: Orquestador Central
+    repository: marcojpad-hash/orquestador-central
+    status: mvp_in_development
+    access: connected_read_write
+    active_branch: feature/core-mvp-l1
+    integration: pull_request_1_open
+    rules:
+      - owner_is_final_authority
+      - l1_only_no_deploy_or_merge_without_approval
+      - keep_project_boundaries
   - id: motor-u6
     name: Motor U6
     repository: marcojpad-hash/motor-u6-storage
-    status: known
-    access: pending_explicit_installation
+    status: active_project_repository_verified
+    access: connected_read_write
     protected: true
     rules:
       - preserve_canonical_files
       - no_unapproved_changes_to_engine
       - distinguish_executed_results_from_hypotheses
+      - store_motor_work_only_in_motor_repository
   - id: capcot
     name: CAPCOT
     repository: marcojpad-hash/capcot-capsulas-imaginantes
-    status: known
-    access: pending_explicit_installation
+    status: active_project_repository_verified
+    access: connected_read_write
+    active_branch: feature/capcot-video-discovery-continuity
+    branch_policy: main_and_feature_diverged_no_unapproved_merge
     rules:
-      - respect_editorial_handoff
-      - textual_preproduction_role_unless_updated
-      - preserve_protected_branches_and_paths
+      - respect_editorial_handoff_growthbot_owns_editorial_line
+      - chatgpt_research_and_textual_preproduction
+      - no_media_generation_or_publication_without_scope
+      - preserve_data_json_and_protected_paths
   - id: imaginantes
     name: Imaginantes
     repository: null
     status: needs_repository_mapping
     access: not_configured
-  - id: general
-    name: Ideas e investigación general
-    repository: marcojpad-hash/orquestador-central
-    status: active
-    access: current_repository_only
+    rules:
+      - audiovisual_production_specialty_remains_reserved
+      - do_not_assume_capcot_repo_is_imaginantes_repo
+  - id: continuity
+    name: Continuidad y memoria de trabajo
+    repository: marcojpad-hash/ChatGPT-migracion
+    status: active_reference_repository_verified
+    access: connected_read_write
+    rules:
+      - store_cross_project_audits_and_handoffs
+      - do_not_treat_as_project_execution_repository
