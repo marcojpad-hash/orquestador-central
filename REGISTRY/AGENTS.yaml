@@ -1,28 +1,40 @@
-version: 1
+version: 2
 agents:
   - id: coordinator
     name: Orquestador Central
     provider: provider_neutral
     specialty: orchestration
-    status: design_only
+    status: core_prototype_in_branch_not_operational
     permissions: L1
+    evidence:
+      repository_branch: feature/core-mvp-l1
+      pull_request: 1
+      ci: passing_unit_tests_only
+    missing_capabilities:
+      - persistent_worker_runtime
+      - provider_adapters
+      - universal_mobile_entry
+      - cross_channel_return
+      - global_memory_service
   - id: motor-u6-specialist
     name: Especialista Motor U6
     provider: dynamically_selected
     specialty: technical_audit_and_engineering
-    status: unassigned
+    status: project_specialty_defined_agent_not_integrated
+    repository: marcojpad-hash/motor-u6-storage
   - id: capcot-research
     name: Investigador CAPCOT
     provider: dynamically_selected
     specialty: research_and_editorial_preproduction
-    status: unassigned
+    status: scheduled_workflow_exists_not_orchestrator_integrated
+    repository: marcojpad-hash/capcot-capsulas-imaginantes
   - id: imaginantes-production
     name: Especialista Imaginantes
     provider: dynamically_selected
     specialty: audiovisual_production_and_release
-    status: unassigned
+    status: specialty_defined_repository_unmapped
   - id: general-research
     name: Investigación general
     provider: dynamically_selected
     specialty: research_and_analysis
-    status: unassigned
+    status: role_defined_not_integrated
