@@ -36,7 +36,7 @@ def main():
     (OUT.parent / "reference.txt").write_text(TEXT, encoding="utf-8")
     PROFILE["reference_text"] = TEXT
     (ROOT / "voice_profile.json").write_text(
-        json.dumps(PROFILE, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+        json.dumps(PROFILE, ensure_ascii=False, indent=2) + chr(10), encoding="utf-8"
     )
     print(f"REFERENCE_CREATED={OUT}")
     print(f"SAMPLE_RATE={sr}; SAMPLES={len(wavs[0])}")
