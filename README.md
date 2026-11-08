@@ -1,4 +1,6 @@
 # orquestador-central
+
+**Lee primero [COORDINATION/COMO_TRABAJAMOS.md](COORDINATION/COMO_TRABAJAMOS.md): reglas, reparto, decisiones y continuidad sin este bot.**
 Orquestador central: plano de control, reglas globales, memoria compartida, registro de órdenes y enrutador de agentes.
 
 ## Gobierno universal
