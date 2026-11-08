@@ -1,11 +1,16 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/marcojpad-hash/orquestador-central/blob/main/docs/propuestas/runtime-testbed-v1/orchestrator.v2.1.json",
   "document_type": "orchestrator_specification",
+  "schema_version": "2.1",
   "id": "executor-entre-repos-v2.1",
   "project": "orquestador-central-runtime-testbed-puente",
   "version": "2.1",
   "archetype": "executor-entre-repos-v2.1",
+  "activation_status": "DOCUMENTAL_NO_ACTIVO",
+  "execution_authorized": false,
+  "dispatch_enabled": false,
+  "llm_calls_enabled": false,
+  "workflows_enabled": false,
+  "tests_enabled": false,
   "compatible_design_principles": [
     "SEQUENTIAL-VERIFIABLE-v1",
     "RUNTIME-TESTBED-v1"
@@ -16,8 +21,10 @@
     "note": "La URI real identifica el dialecto JSON Schema; no valida por sí sola los campos de configuración ni activa el arquetipo. Este documento es una especificación anotada, no sustituye un esquema de configuración con restricciones.",
     "configuration_schema": null,
     "configuration_schema_status": "PENDIENTE_DEFINIR_EN_FASE_POSTERIOR",
-    "syntax_check": "python json.load solamente; no se ejecuta runtime ni validador de contratos",
+    "syntax_check": "NO_REALIZADO_POR_INSTRUCCION_DE_MJ; revisión textual estática únicamente",
     "legacy_sequential_runner_direct_input": false,
+    "runtime_testbed_job_instance": false,
+    "adapter_ids_are_executable_or_allowlisted": false,
     "requires_explicit_versioned_adapter": true,
     "existing_contract_must_remain_unchanged": true
   },
@@ -792,6 +799,8 @@
   ],
   "step_contract": {
     "adapter_ids_status": "PROPUESTOS_NO_IMPLEMENTADOS_NO_ALLOWLISTADOS_AUN",
+    "steps_are_descriptive_not_executable": true,
+    "steps_are_not_runtime_testbed_job_steps": true,
     "top_level_steps_is_only_authoritative_steps_array": true,
     "steps_describe_stage_order_not_a_second_runtime_engine": true,
     "cache_hit_branch": "S05-S07 sólo requieren worker para misses; hits válidos van a S08 con recibo original, sin simular etapas ejecutadas.",
@@ -802,10 +811,12 @@
     "per_task_checkpoint": "El runtime materializado debe guardar cada paso real verificado al concluir, no esperar al final del batch; S09 reconcilia y persiste manifiestos pendientes."
   },
   "expected_output": {
-    "current": "Sólo especificación JSON y anexo local; sintaxis leída con json.load, sin prueba funcional, ejecución ni commit.",
+    "current": "Sólo especificación y documento de contrato; lectura y edición estáticas, sin parser, validador, ejecución ni prueba.",
     "future": "Resultados por todas las tareas con estados honestos, errores y provenance; JSONL continuo, manifiestos, checkpoints válidos y evidencia de candados.",
     "current_runtime_test_status": "NO_EJECUTADO_POR_INSTRUCCION_DE_MJ",
+    "current_syntax_validation_status": "NO_REALIZADA_POR_INSTRUCCION_DE_MJ",
     "json_load_is_runtime_or_schema_validation": false,
+    "json_was_parsed_or_executed_in_current_preparation": false,
     "whole_runtime_implemented_by_json": false,
     "all_programs_need_exactly_this_stack": false
   }
