@@ -19,9 +19,10 @@ pip install -r voice-core/requirements.txt
 cp voice-core/voice_profile.example.json voice-core/voice_profile.json
 ```
 
-Coloca una grabación autorizada y limpia en `voice-core/voices/narrador_es_mx_01/reference.wav`, edita el perfil con su transcripción literal y ejecuta:
+Genera una identidad original con VoiceDesign y conviértela en una referencia fija para el motor Base:
 
 ```bash
+python voice-core/bootstrap_voice.py
 VOICE_PROFILE=voice-core/voice_profile.json uvicorn server:app --app-dir voice-core --host 0.0.0.0 --port 8787
 ```
 
@@ -45,4 +46,4 @@ El servicio carga el modelo y construye el prompt de voz una sola vez al arranca
 
 ## Estado honesto
 
-El código y la interfaz quedan preparados, pero la síntesis real no puede declararse probada hasta aportar una referencia autorizada y ejecutar el modelo en un host con GPU compatible. El teléfono Android no debe tratarse como servidor de inferencia para el checkpoint 1.7B. Edge TTS queda como fallback temporal, no como identidad compartida.
+El código y la interfaz quedan preparados. La referencia original se crea con `bootstrap_voice.py`; la síntesis real no puede declararse probada hasta ejecutar ambos modelos en un host con GPU compatible. El teléfono Android no debe tratarse como servidor de inferencia para el checkpoint 1.7B. Edge TTS queda como fallback temporal, no como identidad compartida.
