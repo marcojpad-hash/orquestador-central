@@ -36,7 +36,7 @@ jobs:
         run: python -m unittest -v test_runner.py
       - name: Validate frontmatter activation metadata
         run: |
-          printf '%s\\n' '---' 'name: demo' 'description: demo contract' 'archetype: sequential-verifiable-v1' '---' '# demo' > /tmp/archetype-demo.md
+          printf '%s\n' '---' 'name: demo' 'description: demo contract' 'archetype: sequential-verifiable-v1' '---' '# demo' > /tmp/archetype-demo.md
           python runtime/validate_frontmatter.py /tmp/archetype-demo.md
       - name: End-to-end sequential execution
         run: python runtime/sequential_runner.py --input examples/sequential-verifiable-v1.example.json --timeout 30
