@@ -23,15 +23,15 @@ Genera una identidad original con VoiceDesign y conviértela en una referencia f
 
 ```bash
 python voice-core/bootstrap_voice.py
-VOICE_PROFILE=voice-core/voice_profile.json uvicorn server:app --app-dir voice-core --host 0.0.0.0 --port 8787
+VOICE_PROFILE=voice-core/voice_profile.json VOICE_API_TOKEN="CAMBIA_ESTE_TOKEN" uvicorn server:app --app-dir voice-core --host 0.0.0.0 --port 8787
 ```
 
-En despliegues reales, proteger el endpoint con autenticación y TLS; no exponerlo públicamente sin control de acceso.
+El endpoint de síntesis exige token Bearer. En despliegues reales, añadir TLS y mantener el token en el gestor de secretos; no escribirlo en GitHub ni exponer el servicio sin control de acceso.
 
 ## API
 
 - `GET /health`: estado del modelo y voice_id.
-- `POST /synthesize`: JSON `{"text":"Texto para narrar","output_path":"out/clip.wav"}`.
+- `POST /synthesize`: JSON `{"text":"Texto para narrar"}` con cabecera `Authorization: Bearer <VOICE_API_TOKEN>`. Devuelve directamente un WAV; `X-Voice-ID` identifica la voz usada.
 
 El servicio carga el modelo y construye el prompt de voz una sola vez al arrancar. Cada síntesis reutiliza esa misma referencia/prompt; no vuelve a seleccionar una voz distinta por petición.
 
