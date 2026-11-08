@@ -1,5 +1,8 @@
 {
   "document_type": "orchestrator_specification",
+  "continuity_entrypoint": "COORDINATION/COMO_TRABAJAMOS.md",
+  "persistent_gateway_spec": "docs/INSTRUCCION_VM_AGENTES_CODIGO.md",
+  "video_pipeline_spec": "docs/INSTRUCCION_PIPELINE_VIDEO_CAPCOT.md",
   "schema_version": "2.1",
   "id": "executor-entre-repos-v2.1",
   "project": "orquestador-central-runtime-testbed-puente",
@@ -22,6 +25,7 @@
     "configuration_schema": null,
     "configuration_schema_status": "PENDIENTE_DEFINIR_EN_FASE_POSTERIOR",
     "syntax_check": "NO_REALIZADO_POR_INSTRUCCION_DE_MJ; revisión textual estática únicamente",
+    "llm_response_format_repair_supplement": "INSTRUCCION_SANDBOX_VM.md define un schema nuevo propuesto y hasta dos correcciones de salida LLM; no retry de job inválido ni permiso de ejecución",
     "legacy_sequential_runner_direct_input": false,
     "runtime_testbed_job_instance": false,
     "adapter_ids_are_executable_or_allowlisted": false,
@@ -65,11 +69,11 @@
     "auto_commit_enabled": false,
     "auto_publish_enabled": false,
     "current_deliverables": [
-      "archivo JSON local",
-      "anexo documental local"
+      "documentación de continuidad versionada en el repo autorizado",
+      "especificaciones y prompts documentales sin activar"
     ],
     "current_allowed_validation": [
-      "json.load para sintaxis"
+      "lectura y revisión textual estática; sin parser de contratos ni ejecución"
     ],
     "prohibited_now": [
       "ejecutar serie JSON",
@@ -79,7 +83,7 @@
       "smoke",
       "workflows y dispatches",
       "llamadas LLM",
-      "commits",
+      "commits de código o activación; publicación documental sólo por mandato específico",
       "activar cola",
       "instalar herramientas",
       "cambiar secretos o permisos"
@@ -231,7 +235,7 @@
   },
   "runtime": {
     "implementation_status": "NO_IMPLEMENTADO_POR_ESTE_JSON",
-    "execution_host_after_authorization": "GitHub Actions",
+    "execution_host_after_authorization": "GitHub Actions para pruebas aisladas; gateway persistente en VM/VPS según INSTRUCCION_VM_AGENTES_CODIGO.md, previa autorización separada",
     "persistent_local_server_required": false,
     "deterministic_scheduler_uses_llm_for_control_flow": false,
     "cost_claim": "La lógica determinista no necesita tokens LLM; Actions, APIs, almacenamiento y modelos pueden tener cuotas y costos. No promete cero tokens ni cero costo para tareas generativas.",
@@ -811,7 +815,7 @@
     "per_task_checkpoint": "El runtime materializado debe guardar cada paso real verificado al concluir, no esperar al final del batch; S09 reconcilia y persiste manifiestos pendientes."
   },
   "expected_output": {
-    "current": "Sólo especificación y documento de contrato; lectura y edición estáticas, sin parser, validador, ejecución ni prueba.",
+    "current": "Documentación de continuidad, especificaciones y prompts versionados por mandato específico; lectura/edición estáticas, sin parser de contratos, validador, ejecución ni prueba.",
     "future": "Resultados por todas las tareas con estados honestos, errores y provenance; JSONL continuo, manifiestos, checkpoints válidos y evidencia de candados.",
     "current_runtime_test_status": "NO_EJECUTADO_POR_INSTRUCCION_DE_MJ",
     "current_syntax_validation_status": "NO_REALIZADA_POR_INSTRUCCION_DE_MJ",
