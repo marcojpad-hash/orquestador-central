@@ -71,7 +71,7 @@ La idea de guardianes/firewall desarrollada alrededor de U6 se trata como antece
 
 No modificar el motor, patrones ni contratos canónicos para extraer esta capa. La extracción se hará mediante análisis y adaptación en un módulo independiente.
 
-## 8. Secuencia de implementación
+## 8. Separación entre comportamiento, guardianes y arquetipos\n1. **Comportamiento de interacción:** `docs/COMO_TRABAJAR_CON_MJ.md`. Regula cómo se interpreta y conduce el trabajo con Mj; no es lógica de ejecución.\n2. **Guardianes operativos agnósticos:** `docs/GUARDIANES_OPERATIVOS_AGNOSTICOS.md`. Especifica funciones de control por responsabilidades observables, sin importar código ni contratos de U6.\n3. **Arquetipos de familia:** documentos independientes con activación explícita. El primero es `docs/ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1.md`, acompañado por su JSON Schema y ejemplo. Sin marca reconocida no se aplica; con marca pero sin runner compatible, permanece declarado y no ejecutado.\n4. **Adaptadores de proyecto:** cada repo decide si adopta el arquetipo y cómo integra sus controles. La autoridad local sigue gobernando detalles técnicos y restricciones.\n\nLa extracción desde U6 debe ser semántica: conservar la función útil de un control, reformularla en términos neutrales y probarla fuera del motor. No copiar implementaciones, nombres internos, dependencias, patrones ni contratos del motor.\n\n## 9. Secuencia de implementación
 **Fase 1 — Normativa:** reglas universales, contrato multi-modelo y guardianes definidos.
 **Fase 2 — Inventario:** registro de repositorios, contratos, ramas, agentes, permisos y responsables.
 **Fase 3 — Operación:** órdenes, estados, handoffs y bitácora central.
@@ -80,5 +80,5 @@ No modificar el motor, patrones ni contratos canónicos para extraer esta capa. 
 
 No automatizar una regla ambigua. Primero debe existir una definición comprobable y casos de prueba.
 
-## 9. Principio de diseño
+## 10. Principio de diseño
 El coordinador central dirige y verifica; los proyectos conservan autonomía técnica; los agentes ejecutan según capacidad real; el usuario mantiene la autoridad final sobre objetivos, decisiones reservadas y permisos.
