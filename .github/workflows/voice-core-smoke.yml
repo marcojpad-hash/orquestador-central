@@ -21,11 +21,13 @@ jobs:
         with:
           python-version: "3.12"
       - name: Compile service without importing model runtime
-        run: python -m py_compile voice-core/server.py
+        run: python -m py_compile voice-core/server.py voice-core/bootstrap_voice.py
       - name: Validate voice profile template
         run: python -m json.tool voice-core/voice_profile.example.json > /dev/null
       - name: Check required service contract
         run: |
           grep -q 'generate_voice_clone' voice-core/server.py
+          grep -q 'generate_voice_design' voice-core/bootstrap_voice.py
+          grep -q 'VOICE_API_TOKEN' voice-core/server.py
           grep -q 'create_voice_clone_prompt' voice-core/server.py
           grep -q 'voice_id' voice-core/voice_profile.example.json
