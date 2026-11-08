@@ -1,5 +1,7 @@
 # AGENTS.md — contrato transversal multi-modelo
 
+**Lee primero [COORDINATION/COMO_TRABAJAMOS.md](COORDINATION/COMO_TRABAJAMOS.md): reglas, reparto, decisiones y continuidad sin este bot.**
+
 Antes de trabajar en este repositorio:
 1. Leer las [Reglas operativas universales](https://github.com/marcojpad-hash/orquestador-central/blob/main/docs/REGLAS_OPERATIVAS_UNIVERSALES.md).
 2. Leer la [Arquitectura del coordinador central](https://github.com/marcojpad-hash/orquestador-central/blob/main/docs/ARQUITECTURA_COORDINADOR_CENTRAL.md).
