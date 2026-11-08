@@ -449,10 +449,10 @@ Dejar diseñado un workflow manual, sin cron ni triggers de push durante prepara
 
 ## 8. Forma de entrega y cierre
 
-1. Entrega un único documento íntegro y autocontenido; no le des a Mj fragmentos que deba cablear.
-2. No cambies ningún otro archivo, secreto, permiso, workflow, cola o ledger. Si el destino ya existe, lee su SHA y conserva cambios ajenos; conflicto = reconciliar explícitamente, no sobrescribir.
-3. Antes de un eventual commit autorizado, verifica que sólo se modifica `docs/INSTRUCCION_RUNTIME_TESTBED_PUENTE.md` y que no se provocará una ejecución automática. No afirmar que el commit no dispara Actions sin revisar los disparadores.
-4. Reporta: ruta y URL/commit reales si se publicaron; contratos corregidos; límites y hallazgos; qué quedó sólo definido; y la frase **“No ejecuté JSON, pruebas, smoke, motor, llamadas LLM ni workflows.”** Si no hay commit, dilo; no fabricar enlaces.
+1. Entrega este documento íntegro y el JSON compañero completo; ambos son artefactos documentales y no entradas ejecutables.
+2. Para esta solicitud se autorizan únicamente estos dos archivos: `docs/INSTRUCCION_RUNTIME_TESTBED_PUENTE.md` y `docs/orchestrator.v2.1.json`. No cambies otros archivos, secretos, permisos, workflows, cola ni ledger. Lee el SHA vigente de cada destino y actualiza con control de versión; conflicto = reconciliar explícitamente, no sobrescribir.
+3. Antes de escribir, revisa los disparadores conocidos de Actions. El cambio se limita a `docs/**`; no modificar workflows para evitar ejecuciones. Si se detecta un disparador aplicable a esas rutas, deja sin publicar y reporta el conflicto.
+4. Reporta rutas, URLs y commit reales; contratos corregidos; límites y hallazgos; qué quedó sólo definido; y la frase **“No ejecuté JSON, pruebas, smoke, motor, llamadas LLM ni workflows.”** No describas lectura estática como validación sintáctica.
 5. No declarar puente vivo, mensaje recibido ni homeostasis estable. Falta de receptor/API se describe con capa exacta y alternativa repositorio/handoff, sin trasladar programación a Mj.
 
 ### Bloque breve para Mj (una sola copia)
@@ -463,9 +463,9 @@ Dejar diseñado un workflow manual, sin cron ni triggers de push durante prepara
 
 ## Anexo — conciliación con `orchestrator.json` v2.0 y propuesta v2.1
 
-**Alcance de esta revisión:** se permite preparar dos archivos locales (este anexo y el JSON), y comprobar exclusivamente sintaxis con `python json.load`. Esto no autoriza ejecutar el runtime, validadores funcionales, pruebas, smoke, llamadas LLM, Actions, dispatches ni commits. La referencia `4056389` fue aportada por coordinación; no se revalidó ese commit en esta fase.
+**Alcance de esta revisión:** se preparan documentalmente este anexo y el JSON compañero en sus rutas reales de `docs/`. No se ejecuta `json.load`, ningún parser, validador, runtime, prueba, smoke, llamada LLM, workflow ni dispatch. La lectura y edición son estáticas. La referencia histórica `4056389` no se usa como autoridad de versión; las escrituras deben anclarse al SHA vigente leído de cada archivo.
 
-Archivo compañero preparado: `/workspace/orchestrator.v2.1.json`. Destino documental **propuesto, no publicado**: `orquestador-central/docs/propuestas/runtime-testbed-v1/orchestrator.v2.1.json`. La ruta de la box es de entrega, no una dependencia de ejecución futura; el runtime sigue diseñado para GitHub Actions. El JSON contiene la especificación fusionada y un único array `steps`. No sustituye ni es entrada directa del runner `SEQUENTIAL-VERIFIABLE-v1`; hará falta un adaptador y contrato versionados, revisados y autorizados.
+Archivo compañero: `orquestador-central/docs/orchestrator.v2.1.json` (ruta documental actual). El JSON contiene una especificación declarativa fusionada y un único array autoritativo `steps`. No sustituye ni es entrada directa del runner `SEQUENTIAL-VERIFIABLE-v1` ni instancia del contrato `RUNTIME-TESTBED-v1`; hará falta un adaptador y contrato versionados, revisados y autorizados. Los nombres de adaptadores de sus etapas son identificadores de diseño, no comandos, rutas ni entradas allowlisted.
 
 **Veredicto:** v2.0 sí tenía choques de contrato y seguridad, pero no es incompatible en su objetivo. Un smoke antes de un batch es una política válida de runtime futuro; lo prohibido ahora es ejecutarlo. Tener logger, queue y watchdog descritos en JSON no significa que sus implementaciones existan.
 
@@ -473,6 +473,22 @@ Archivo compañero preparado: `/workspace/orchestrator.v2.1.json`. Destino docum
 
 **Aportes útiles incorporados:** caché explícita; circuit breaker persistido con half-open de una sonda; rate limiter por cuota real y presupuesto; telemetría agregada y agrupación de tareas compatibles. Estas políticas estaban ausentes o menos detalladas en la instrucción base. Se precisaron tres intentos totales = dos reintentos y esperas 5/15 segundos; 5/15/45 implicaría cuatro intentos. Se eliminaron cuotas gratuitas asumidas, reparto rígido por marca y promesas de “cero tokens/costo”.
 
-**Límites y evidencia:** `$schema` nombra un dialecto válido, pero no valida por sí mismo los campos de una configuración; el JSON lo declara expresamente y deja pendiente su esquema de configuración. `json.load` sólo acredita sintaxis, no JSON Schema, semántica, permisos ni funcionamiento. Todos los adaptadores/servicios nuevos permanecen propuestos y deshabilitados. Ningún ACK, fixture, presencia de archivo o cache hit se presenta como ejecución nueva. Los resultados de ejemplo están pendientes, no inventan PASS.
+**Límites y evidencia:** `orchestrator.v2.1.json` es una especificación anotada, no un JSON Schema. Por ello no debe declarar `$schema` ni `$id` como si definieran un esquema aplicable; el dialecto y la futura ubicación del esquema de configuración se documentan dentro de `schema_semantics`. El esquema `RUNTIME-TESTBED-v1` sólo admite sus propios tipos de documento (`Job`, `GuardianSet`, `Message`, `Config`); la especificación de orquestación no se hace pasar por un `Job`. Los adaptadores de `steps` siguen propuestos y no allowlisted. Ningún ACK, fixture, presencia de archivo o cache hit se presenta como ejecución nueva. Los resultados de ejemplo siguen pendientes y no inventan PASS.
 
-Estado: archivos preparados localmente; no ejecutados ni publicados. No se modifica el documento remoto ni el commit previo con este anexo.
+Estado de esta revisión: lectura estática y preparación documental. No se ejecutó JSON, parser, `json.load`, esquema, semántica, runtime, pruebas, smoke, motor, llamadas LLM, workflows ni dispatches. La escritura remota, si se confirma, sólo acredita que el texto fue guardado; no acredita que sea válido o funcional.
+
+
+## Registro de revisión documental — 2026-11-08
+
+Esta revisión actualiza el contrato de entrega para que el alcance solicitado incluya exactamente este documento y `docs/orchestrator.v2.1.json`. No materializa los archivos de propuesta descritos en el árbol objetivo ni crea rutas operativas.
+
+Criterios aplicados al JSON compañero:
+- Es una especificación declarativa anotada, no un JSON Schema: no usa `$schema` ni `$id` en la raíz.
+- Declara `schema_version`, `execution_authorized: false`, `dispatch_enabled: false`, `llm_calls_enabled: false` y `workflows_enabled: false`.
+- Declara el estado `DOCUMENTAL_NO_ACTIVO`; el nombre de un arquetipo no equivale a activarlo.
+- Mantiene un único array `steps` como secuencia descriptiva. Sus `adapter_id` y `verify_adapter_id` son etiquetas de diseño pendientes de implementación y allowlist.
+- Separa el esquema futuro de configuración del dialecto JSON Schema y del contrato existente `SEQUENTIAL-VERIFIABLE-v1`.
+- Los estados de proveedor, agente, receptor, cuotas, permisos y endpoints no comprobados permanecen explícitamente no probados o pendientes.
+- No autoriza acceso cruzado, secretos, escritura en repositorios de proyecto, ni ejecución de código generado.
+
+**Estado:** PREPARACIÓN_DOCUMENTAL. No hay validación sintáctica, validación JSON Schema, prueba semántica, ejecución, smoke ni evidencia de puente operativo.
