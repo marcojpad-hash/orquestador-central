@@ -22,7 +22,7 @@ cp voice-core/voice_profile.example.json voice-core/voice_profile.json
 Coloca una grabación autorizada y limpia en `voice-core/voices/narrador_es_mx_01/reference.wav`, edita el perfil con su transcripción literal y ejecuta:
 
 ```bash
-VOICE_PROFILE=voice-core/voice_profile.json uvicorn voice-core.server:app --host 0.0.0.0 --port 8787
+VOICE_PROFILE=voice-core/voice_profile.json uvicorn server:app --app-dir voice-core --host 0.0.0.0 --port 8787
 ```
 
 En despliegues reales, proteger el endpoint con autenticación y TLS; no exponerlo públicamente sin control de acceso.
