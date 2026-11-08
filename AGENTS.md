@@ -1,7 +1,9 @@
 # AGENTS.md — contrato transversal multi-modelo
 
 Antes de trabajar en este repositorio:
-1. Leer el [Contrato de trabajo multi-modelo](https://github.com/marcojpad-hash/orquestador-central/blob/main/docs/CONTRATO_TRABAJO_MULTI_MODELO.md).
+1. Leer las [Reglas operativas universales](https://github.com/marcojpad-hash/orquestador-central/blob/main/docs/REGLAS_OPERATIVAS_UNIVERSALES.md).
+2. Leer la [Arquitectura del coordinador central](https://github.com/marcojpad-hash/orquestador-central/blob/main/docs/ARQUITECTURA_COORDINADOR_CENTRAL.md).
+3. Leer el [Contrato de trabajo multi-modelo](https://github.com/marcojpad-hash/orquestador-central/blob/main/docs/CONTRATO_TRABAJO_MULTI_MODELO.md).
 2. Revisar el [Registro de capacidades verificadas](https://github.com/marcojpad-hash/orquestador-central/blob/main/docs/CAPACIDADES_MODELOS.md) y actualizarlo si la interfaz o los permisos cambiaron.
 3. Leer este README y las instrucciones/contratos locales del proyecto.
 4. Confirmar repositorio, rama, commit, permisos y alcance antes de escribir.
