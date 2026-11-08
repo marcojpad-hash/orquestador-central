@@ -33,8 +33,8 @@ def main():
         key=os.environ.get("GEMINI_API_KEY")
         if not key: raise SystemExit("Missing GitHub Secret GEMINI_API_KEY")
         from urllib.parse import quote
-        result=post("https://generativelanguage.googleapis.com/v1beta/models/"+quote(model,safe="") + ":generateContent?key="+quote(key,safe=""),
-          {},{"systemInstruction":{"parts":[{"text":system}]},"contents":[{"role":"user","parts":[{"text":prompt}]}],"generationConfig":{"temperature":0.2}})
+        result=post("https://generativelanguage.googleapis.com/v1beta/models/"+quote(model,safe="") + ":generateContent",
+          {"x-goog-api-key":key},{"systemInstruction":{"parts":[{"text":system}]},"contents":[{"role":"user","parts":[{"text":prompt}]}],"generationConfig":{"temperature":0.2}})
         answer="\n".join(p.get("text","") for p in result["candidates"][0]["content"]["parts"])
     else:
         raise SystemExit("LLM_PROVIDER must be groq or gemini")
