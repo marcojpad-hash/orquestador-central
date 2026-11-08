@@ -11,7 +11,7 @@ def cargar(tmp):
     shutil.copytree(AQUI / "enchufes", E.ENCHUFES)
     spec = importlib.util.spec_from_file_location("switch", AQUI / "switch.py")
     s = importlib.util.module_from_spec(spec); spec.loader.exec_module(s)
-    s.E = E; s.ENTRADAS = tmp / "entradas"; s.SWITCH = tmp / "switch.json"
+    s.E = E; s.ENTRADAS = tmp / "entradas"; s.SWITCH = tmp / "switch.json"; s.TABLERO = tmp / "LUCES.md"
     return s
 
 
@@ -42,6 +42,20 @@ class TestSwitch(unittest.TestCase):
         self.assertEqual(len(self.s.pendientes("grok")), 1)
         self.s.tomar(e["id"], "grok")
         self.assertEqual(len(self.s.pendientes("grok")), 0)
+
+    def test_foquito(self):
+        e = self.s.difundir("muse", "confirma esto")
+        self.s.tomar(e["id"], "grok")
+        self.s.confirmar(e["id"], "grok", "voy")
+        self.s.confirmar(e["id"], "gpt-oss", "sin permiso", fallo=True)
+        tab = self.s.TABLERO.read_text()
+        self.assertIn("🟢", tab); self.assertIn("🔴", tab); self.assertIn("🟡", tab)
+
+    def test_no_confirma_quien_no_recibio(self):
+        self.s.poner("gpt-oss", True)
+        e = self.s.difundir("muse", "z")
+        with self.assertRaises(SystemExit):
+            self.s.confirmar(e["id"], "gpt-oss")
 
 
 if __name__ == "__main__":

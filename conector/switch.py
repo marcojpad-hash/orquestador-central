@@ -16,6 +16,8 @@ Uso:
   python3 conector/switch.py tomar <id> --por grok
   python3 conector/switch.py apagar gpt-oss   |   encender gpt-oss
   python3 conector/switch.py estado
+  python3 conector/switch.py confirmar <id> --por grok [--nota ...] [--fallo]
+  python3 conector/switch.py luces   (escribe conector/LUCES.md)
 """
 import argparse, hashlib, json
 from pathlib import Path
@@ -67,6 +69,7 @@ def difundir(de, texto, canal="chat"):
     p.write_text(json.dumps(e, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     E.traza("switch_difundir", id=hid, de=de, a=destinos)
     print(f"entrada {hid}: {de} -> {', '.join(destinos) or 'nadie'}")
+    luces()
     return e
 
 
@@ -89,6 +92,46 @@ def tomar(eid, por):
     p.write_text(json.dumps(e, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     E.traza("switch_tomar", id=eid, por=por)
     print(f"entrada {eid} tomada por {por}")
+    luces()
+
+
+LUZ = {"pendiente": "🟡", "tomada": "🔵", "confirmada": "🟢", "fallo": "🔴"}
+TABLERO = RAIZ / "LUCES.md"
+
+
+def confirmar(eid, por, nota="", fallo=False):
+    """El foquito: el modelo avisa que entendió y lo está haciendo (🟢) o que no pudo (🔴)."""
+    p = ENTRADAS / f"{eid}.json"
+    if not p.exists():
+        raise SystemExit(f"no existe la entrada {eid}")
+    e = json.loads(p.read_text(encoding="utf-8"))
+    if por not in e["entregas"]:
+        raise SystemExit(f"{por} no recibió la entrada {eid}")
+    e["entregas"][por] = "fallo" if fallo else "confirmada"
+    e.setdefault("notas", {})[por] = {"ts": E.ahora(), "nota": nota}
+    p.write_text(json.dumps(e, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    E.traza("switch_confirmar", id=eid, por=por, fallo=fallo)
+    print(f"{LUZ[e['entregas'][por]]} {por} en {eid}")
+    luces()
+
+
+def luces(escribir=True):
+    """Tablero de foquitos: una fila por entrada, una luz por modelo."""
+    agentes = list(E.cargar_enchufes())
+    filas = ["# Luces del switch", "",
+             "🟡 le llegó, no la ha tomado · 🔵 la tomó · 🟢 confirmó que la hace · 🔴 no pudo · ⚪ apagado/no recibe", "",
+             "| entrada | origen | " + " | ".join(agentes) + " | texto |",
+             "|---|---|" + "---|" * len(agentes) + "---|"]
+    for p in sorted(ENTRADAS.glob("*.json"), key=lambda x: x.stat().st_mtime, reverse=True):
+        e = json.loads(p.read_text(encoding="utf-8"))
+        luz = [LUZ.get(e["entregas"].get(a), "⚪") for a in agentes]
+        txt = e["texto"].replace("|", "/").replace("\n", " ")[:60]
+        filas.append(f"| {e['id']} | {e['origen']} | " + " | ".join(luz) + f" | {txt} |")
+    salida = "\n".join(filas) + "\n"
+    if escribir:
+        TABLERO.write_text(salida, encoding="utf-8")
+    print(salida)
+    return salida
 
 
 def poner(agente, apagado):
@@ -114,6 +157,8 @@ def main(argv=None):
     for n in ("apagar", "encender"):
         x = sub.add_parser(n); x.add_argument("agente")
     sub.add_parser("estado")
+    c = sub.add_parser("confirmar"); c.add_argument("id"); c.add_argument("--por", required=True); c.add_argument("--nota", default=""); c.add_argument("--fallo", action="store_true")
+    sub.add_parser("luces")
     x = ap.parse_args(argv)
     if x.cmd == "difundir": difundir(x.de, x.texto, x.canal)
     elif x.cmd == "pendientes": pendientes(x.agente)
@@ -121,6 +166,8 @@ def main(argv=None):
     elif x.cmd == "apagar": poner(x.agente, True)
     elif x.cmd == "encender": poner(x.agente, False)
     elif x.cmd == "estado": estado()
+    elif x.cmd == "confirmar": confirmar(x.id, x.por, x.nota, x.fallo)
+    elif x.cmd == "luces": luces()
 
 
 if __name__ == "__main__":

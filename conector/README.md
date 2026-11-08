@@ -42,3 +42,21 @@ python3 conector/switch.py estado
 ```
 
 Regla para todo modelo: al recibir un mensaje de Mj, primero lo difunde y luego trabaja. Al arrancar, primero revisa sus pendientes.
+
+## Confirmador (el foquito)
+
+Cada modelo tiene una luz por cada mensaje, y el tablero se guarda solo en `conector/LUCES.md`, que se puede leer en GitHub.
+
+- 🟡 Le llegó y no lo ha tomado.
+- 🔵 Lo tomó.
+- 🟢 Confirmó que lo entendió y lo está haciendo.
+- 🔴 No pudo. Debe dejar una nota diciendo por qué.
+- ⚪ Está apagado o no recibió el mensaje.
+
+```sh
+python3 conector/switch.py confirmar <id> --por grok --nota "voy con el video"
+python3 conector/switch.py confirmar <id> --por gpt-oss --fallo --nota "no tengo navegador"
+python3 conector/switch.py luces
+```
+
+Solo un modelo que recibió el mensaje puede encender su luz, así que nadie puede confirmar por otro. Si una luz se queda en 🟡, ese modelo no lo ha visto. Si queda en 🔴, el mensaje se pide de nuevo con `enchufe.py pedir` para que lo haga quien sí pueda.
