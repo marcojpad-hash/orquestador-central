@@ -3,7 +3,7 @@
 **Estado:** BASE NORMATIVA INICIAL  
 **Alcance:** cualquier trabajo, proyecto, repositorio, agente, modelo o herramienta coordinada por el sistema.
 
-Este documento define cómo se trabaja. No define cómo funciona un proyecto particular. Cada proyecto puede añadir controles especializados, pero no puede anular estas reglas de seguridad, evidencia, autoridad y trazabilidad.
+Este documento define principios transversales de trabajo y trazabilidad; no define una única forma de ejecutar todos los proyectos. Se complementa con el contrato de interacción con Mj y la especificación funcional de guardianes operativos agnósticos. Los arquetipos de familias de trabajo son opcionales y solo aplican cuando existe una marca explícita reconocida por el ejecutor.
 
 ## 1. Regla de intención y alcance
 Antes de actuar, identificar:
@@ -131,5 +131,5 @@ Los guardianes son controles de paso que evalúan una acción antes, durante o d
 
 Los guardianes transversales no reemplazan los guardianes especializados de Motor U6. Estos últimos pueden tener reglas predictivas, matemáticas o de dominio que no deben generalizarse sin revisión.
 
-## 13. Evolución de estas reglas
+## 13. Separación de especificaciones\n- **Interacción con Mj:** `COMO_TRABAJAR_CON_MJ.md`; guía interpretación, continuidad y comunicación. No ejecuta ni valida procesos.\n- **Guardianes operativos agnósticos:** `GUARDIANES_OPERATIVOS_AGNOSTICOS.md`; define responsabilidades neutrales de runner, workers, cola, monitorización, watchdog, límites, recuperación, sandbox y verificación.\n- **Arquetipos:** cada familia define condiciones y contrato propios. `ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1` no se aplica globalmente y requiere marca explícita.\n- **Adaptadores locales:** cada proyecto decide si adopta un arquetipo y traduce sus contratos sin ceder autoridad sobre código, datos o ejecución.\n\nLa marca de un arquetipo no ejecuta ni valida por sí misma. Solo un runner/validador que reconozca la marca puede aplicar el contrato.\n\n## 14. Evolución de estas reglas
 Esta versión es una base inicial. Los cambios deben incluir motivo, caso que los exige, impacto, compatibilidad y prueba. No convertir una excepción de un proyecto en regla global sin demostrar que aplica a todos.
