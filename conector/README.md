@@ -24,3 +24,21 @@ python3 -m unittest conector/test_enchufe.py
 - El orquestador sigue siendo uno solo: orquestador-central. Las baterías, agente-cero-costo y CAPCOT piden y acusan por este conector.
 - Usa solo la librería estándar de Python y no hace llamadas a red. Lo puede operar un modelo, un workflow de Actions o un servidor MCP en la máquina persistente. El MCP solo envuelve estos mismos comandos.
 - Cada movimiento queda registrado en `conector/traza.jsonl`. No toca el Engine ni la 244, y nada entra a main sin la palabra "merge" de Mj.
+
+## Switch dinámico de entradas (`switch.py`)
+
+Cuando cualquier modelo recibe un mensaje de Mj, lo difunde y el switch deja ese mismo mensaje para todos los demás. Así todos trabajan con el mismo input, sin que Mj lo pegue en cada modelo.
+
+- Es dinámico: recibe cualquier modelo que tenga enchufe, salvo que esté apagado en `switch.json`.
+- Si dos modelos reciben el mismo mensaje, se difunde una sola vez y el segundo solo queda registrado como receptor.
+- Cada modelo revisa sus mensajes pendientes al arrancar y los marca como tomados.
+
+```sh
+python3 conector/switch.py difundir --de muse --texto "lo que dijo Mj"
+python3 conector/switch.py pendientes grok
+python3 conector/switch.py tomar <id> --por grok
+python3 conector/switch.py apagar gpt-oss
+python3 conector/switch.py estado
+```
+
+Regla para todo modelo: al recibir un mensaje de Mj, primero lo difunde y luego trabaja. Al arrancar, primero revisa sus pendientes.
