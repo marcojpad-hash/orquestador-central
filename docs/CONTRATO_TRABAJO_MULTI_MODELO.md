@@ -1,4 +1,9 @@
 # Contrato de trabajo multi-modelo
+
+## 0. Memoria compartida obligatoria — gate universal
+
+Antes de cualquier trabajo en cualquier repositorio del propietario, cada modelo debe leer `memoria-compartida/PROTOCOLO_MEMORIA_COMPARTIDA_OBLIGATORIA.md`, después `memoria-compartida/INDICE.md` y los hechos pertinentes. Este gate aplica incluso a tareas de solo lectura, investigación y respuesta; no se sustituye por memoria conversacional, resúmenes previos ni contexto del chat. Si la fuente no está accesible, declarar el archivo/error exactos y no inventar su contenido. Al cerrar, sincronizar hechos, decisiones, correcciones y estados durables verificados con fecha y fuente. Los artefactos permanecen en el repositorio especializado. Cada repositorio debe anclar este gate en su `AGENTS.md` y README.
+
 **Versión:** 1.0  
 **Vigencia:** 2026-11-07  
 **Propietario del sistema:** Mj  
