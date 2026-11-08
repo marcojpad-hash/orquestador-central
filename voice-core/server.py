@@ -7,6 +7,7 @@ from pathlib import Path
 from threading import Lock
 
 import soundfile as sf
+import torch
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from qwen_tts import Qwen3TTSModel
@@ -14,7 +15,7 @@ from qwen_tts import Qwen3TTSModel
 ROOT = Path(__file__).resolve().parent
 PROFILE_PATH = Path(os.getenv("VOICE_PROFILE", ROOT / "voice_profile.json"))
 DEVICE_MAP = os.getenv("VOICE_DEVICE_MAP", "cuda:0")
-DTYPE = os.getenv("VOICE_DTYPE", "bfloat16")
+DTYPE = getattr(torch, os.getenv("VOICE_DTYPE", "bfloat16"))
 app = FastAPI(title="Shared Voice Core", version="0.1.0")
 model = None
 clone_prompt = None
