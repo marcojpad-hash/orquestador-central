@@ -37,7 +37,7 @@ def load_voice():
     audio = (ROOT / profile["reference_audio"]).resolve()
     if not audio.is_file():
         raise RuntimeError(f"Authorized reference audio missing: {audio}")
-    if not profile.get("reference_text") or profile["reference_text"].startswith("TRANSCRIPCION_"):
+    if (not profile.get("reference_text") or profile["reference_text"].startswith("TRANSCRIPCION_") or profile["reference_text"].startswith("GENERATED_BY_")):
         raise RuntimeError("Set the exact transcript of the reference recording.")
     model = Qwen3TTSModel.from_pretrained(
         profile["model"], device_map=DEVICE_MAP, dtype=DTYPE
