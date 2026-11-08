@@ -460,3 +460,19 @@ Dejar diseñado un workflow manual, sin cron ni triggers de push durante prepara
 > Lee completo `docs/INSTRUCCION_RUNTIME_TESTBED_PUENTE.md` en `marcojpad-hash/orquestador-central` y corrige los contratos JSON siguiendo ese documento y las reglas de nuestros repos.
 > Sólo preparación documental: no ejecutes los JSON, pruebas, smoke, motor, llamadas LLM ni workflows; no hagas dispatches ni toques Engine/244.
 > Entrega el documento completo, cambios y evidencia de escritura; distingue lo preparado de lo probado.
+
+## Anexo — conciliación con `orchestrator.json` v2.0 y propuesta v2.1
+
+**Alcance de esta revisión:** se permite preparar dos archivos locales (este anexo y el JSON), y comprobar exclusivamente sintaxis con `python json.load`. Esto no autoriza ejecutar el runtime, validadores funcionales, pruebas, smoke, llamadas LLM, Actions, dispatches ni commits. La referencia `4056389` fue aportada por coordinación; no se revalidó ese commit en esta fase.
+
+Archivo compañero preparado: `/workspace/orchestrator.v2.1.json`. Destino documental **propuesto, no publicado**: `orquestador-central/docs/propuestas/runtime-testbed-v1/orchestrator.v2.1.json`. La ruta de la box es de entrega, no una dependencia de ejecución futura; el runtime sigue diseñado para GitHub Actions. El JSON contiene la especificación fusionada y un único array `steps`. No sustituye ni es entrada directa del runner `SEQUENTIAL-VERIFIABLE-v1`; hará falta un adaptador y contrato versionados, revisados y autorizados.
+
+**Veredicto:** v2.0 sí tenía choques de contrato y seguridad, pero no es incompatible en su objetivo. Un smoke antes de un batch es una política válida de runtime futuro; lo prohibido ahora es ejecutarlo. Tener logger, queue y watchdog descritos en JSON no significa que sus implementaciones existan.
+
+**Choques corregidos:** URI real Draft 2020-12 y `archetype` separado; repos propios sin placeholders/forks/submodules automáticos; JSONL continuo desde bootstrap, no logging al final; una sola secuencia de etapas; límites Engine/244, verificación semántica/CEB y checkpoints reales verificados; sandbox como aislamiento revisado, conservación de evidencia antes de limpieza; caché por entradas/código/permisos/modelo y provenance, no sólo texto; recuperación desde último checkpoint válido; batch lógico dividido por proveedor compatible y transporte mediante bus, no una llamada universal a todos los modelos.
+
+**Aportes útiles incorporados:** caché explícita; circuit breaker persistido con half-open de una sonda; rate limiter por cuota real y presupuesto; telemetría agregada y agrupación de tareas compatibles. Estas políticas estaban ausentes o menos detalladas en la instrucción base. Se precisaron tres intentos totales = dos reintentos y esperas 5/15 segundos; 5/15/45 implicaría cuatro intentos. Se eliminaron cuotas gratuitas asumidas, reparto rígido por marca y promesas de “cero tokens/costo”.
+
+**Límites y evidencia:** `$schema` nombra un dialecto válido, pero no valida por sí mismo los campos de una configuración; el JSON lo declara expresamente y deja pendiente su esquema de configuración. `json.load` sólo acredita sintaxis, no JSON Schema, semántica, permisos ni funcionamiento. Todos los adaptadores/servicios nuevos permanecen propuestos y deshabilitados. Ningún ACK, fixture, presencia de archivo o cache hit se presenta como ejecución nueva. Los resultados de ejemplo están pendientes, no inventan PASS.
+
+Estado: archivos preparados localmente; no ejecutados ni publicados. No se modifica el documento remoto ni el commit previo con este anexo.
