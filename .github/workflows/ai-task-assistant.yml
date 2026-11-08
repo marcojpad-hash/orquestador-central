@@ -1,0 +1,50 @@
+name: AI Task Assistant
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: LLM provider
+        required: true
+        type: choice
+        options:
+          - groq
+          - gemini
+        default: groq
+      model:
+        description: Exact model ID from the selected provider
+        required: true
+        type: string
+      prompt:
+        description: Task or question (proposal only; no repository writes)
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: ai-assistant-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  ask:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Call selected provider
+        env:
+          LLM_PROVIDER: ${{ inputs.provider }}
+          LLM_MODEL: ${{ inputs.model }}
+          TASK_PROMPT: ${{ inputs.prompt }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python runtime/llm_dispatch.py
+      - name: Save answer as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-task-response-${{ github.run_id }}
+          path: artifacts/ai-assistant/
+          retention-days: 14
