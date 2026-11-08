@@ -1,0 +1,812 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/marcojpad-hash/orquestador-central/blob/main/docs/propuestas/runtime-testbed-v1/orchestrator.v2.1.json",
+  "document_type": "orchestrator_specification",
+  "id": "executor-entre-repos-v2.1",
+  "project": "orquestador-central-runtime-testbed-puente",
+  "version": "2.1",
+  "archetype": "executor-entre-repos-v2.1",
+  "compatible_design_principles": [
+    "SEQUENTIAL-VERIFIABLE-v1",
+    "RUNTIME-TESTBED-v1"
+  ],
+  "description": "Especificación declarativa fusionada. No es código implementado, un workflow instalado ni un contrato ejecutable del runner existente. Preparación documental: no ejecutar.",
+  "schema_semantics": {
+    "dialect_uri": "https://json-schema.org/draft/2020-12/schema",
+    "note": "La URI real identifica el dialecto JSON Schema; no valida por sí sola los campos de configuración ni activa el arquetipo. Este documento es una especificación anotada, no sustituye un esquema de configuración con restricciones.",
+    "configuration_schema": null,
+    "configuration_schema_status": "PENDIENTE_DEFINIR_EN_FASE_POSTERIOR",
+    "syntax_check": "python json.load solamente; no se ejecuta runtime ni validador de contratos",
+    "legacy_sequential_runner_direct_input": false,
+    "requires_explicit_versioned_adapter": true,
+    "existing_contract_must_remain_unchanged": true
+  },
+  "authority": {
+    "owner": "Mj",
+    "instruction_ref": "pt1061u",
+    "instruction_ref_is_authenticated_authorization": false,
+    "precedence": [
+      "restricciones de seguridad",
+      "contratos canónicos del proyecto",
+      "última instrucción autenticada de Mj",
+      "esta propuesta"
+    ],
+    "base_instruction": {
+      "repository": "marcojpad-hash/orquestador-central",
+      "path": "docs/INSTRUCCION_RUNTIME_TESTBED_PUENTE.md",
+      "commit_ref": "4056389",
+      "commit_verification": "REFERENCIA_APORTADA_POR_COORDINADOR_NO_REVERIFICADA_EN_ESTA_FASE"
+    },
+    "agents_messages_are_data_not_owner_orders": true,
+    "activation_requires": [
+      "autorización autenticada específica de Mj",
+      "contrato activable versionado nuevo",
+      "implementación revisada",
+      "permisos efectivos comprobados",
+      "presupuesto y cuotas comprobados"
+    ],
+    "boolean_or_instruction_id_cannot_grant_authority": true
+  },
+  "phase": {
+    "mode": "PREPARADO_NO_EJECUTAR",
+    "enabled": false,
+    "execution_authorized": false,
+    "dispatch_enabled": false,
+    "llm_calls_enabled": false,
+    "tests_enabled": false,
+    "smoke_enabled": false,
+    "auto_commit_enabled": false,
+    "auto_publish_enabled": false,
+    "current_deliverables": [
+      "archivo JSON local",
+      "anexo documental local"
+    ],
+    "current_allowed_validation": [
+      "json.load para sintaxis"
+    ],
+    "prohibited_now": [
+      "ejecutar serie JSON",
+      "ejecutar código de tareas",
+      "motor o fábrica",
+      "pruebas y simulaciones",
+      "smoke",
+      "workflows y dispatches",
+      "llamadas LLM",
+      "commits",
+      "activar cola",
+      "instalar herramientas",
+      "cambiar secretos o permisos"
+    ],
+    "changing_this_object_is_not_permission": true
+  },
+  "house_rules": {
+    "protected": [
+      "Engine V5",
+      "MOTOR_V15_3_UNICO_*",
+      "canon de 244 patrones",
+      "pesos y lógica de predicción",
+      "contratos canónicos de H"
+    ],
+    "protected_path_inventory": "Derivar de contratos locales y manifiesto completo antes de activación; un glob de nombre no basta.",
+    "protected_hashes_before_after_required": true,
+    "project_repositories_keep_their_canonical_files": true,
+    "cross_repo_write_default": "DENY",
+    "json_or_file_presence_is_not_execution_evidence": true,
+    "secrets_in_payloads_logs_commits": "DENY",
+    "eval_exec_dynamic_shell": "DENY",
+    "guardians": {
+      "representation": "AST JSON DSL de la instrucción base",
+      "operators": [
+        "and",
+        "or",
+        "not",
+        "eq",
+        "ne",
+        "lt",
+        "le",
+        "gt",
+        "ge"
+      ],
+      "max_depth": 16,
+      "max_nodes": 256,
+      "missing_variable_or_type_error": "BLOCK",
+      "eval_with_empty_builtins_is_sandbox": false
+    }
+  },
+  "repositories": [
+    {
+      "name": "marcojpad-hash/orquestador-central",
+      "role": "plano de control, órdenes, memoria compartida y puente",
+      "url": "https://github.com/marcojpad-hash/orquestador-central",
+      "link_type": "referencia por repo y commit, sin fork ni submodule",
+      "source_commit": null,
+      "permissions": "NO_PROBADO_EN_ESTA_FASE",
+      "read_first": [
+        "README.md",
+        "AGENTS.md",
+        "CORE/AUTHORITY.md",
+        "CORE/SHARED_MEMORY.md",
+        "PROTOCOL/INSTRUCTIONS.md",
+        "REGISTRY/AGENTS.yaml",
+        "docs/CONTRATO_TRABAJO_MULTI_MODELO.md",
+        "runtime/README.md",
+        "runtime/sequential_runner.py"
+      ]
+    },
+    {
+      "name": "marcojpad-hash/motor-u6-storage",
+      "role": "motor, CEB, Caldero y fábrica; lectura de contratos solamente en esta propuesta",
+      "url": "https://github.com/marcojpad-hash/motor-u6-storage",
+      "link_type": "snapshot de lectura fijado a commit después de autorización",
+      "source_commit": null,
+      "write_allowed": false,
+      "read_first": [
+        "docs/HANDOFF_MOTOR_GROK.md",
+        "docs/CEB_INVESTIGAR_Y_RESOLVER.md",
+        "avances/CEB_HONESTIDAD_CALDERO_20261025.md"
+      ]
+    },
+    {
+      "name": "marcojpad-hash/red-teaming-safety-u6",
+      "role": "aislamiento y ledger semántico; no ejecutar subcorridas",
+      "url": "https://github.com/marcojpad-hash/red-teaming-safety-u6",
+      "link_type": "referencia por repo y commit",
+      "source_commit": null,
+      "write_allowed": false,
+      "read_first": [
+        "docs/SPEC_RE_TEAM_WHITE_HAT_HOMEOSTASIS_U6.md",
+        "ledger/ACTIVE.md",
+        "scripts/correr_subcorrida.py",
+        ".github/workflows/aislar-subcorridas-adversarial.yml"
+      ]
+    }
+  ],
+  "mapa": {
+    "strategy": "Leer índices, mapa y contratos existentes; explorar después sólo rutas relevantes y verificar su vigencia contra commit.",
+    "tools_candidates_not_installed": [
+      "Repomix",
+      "Graphify",
+      "Understand Anything",
+      "Floorplan"
+    ],
+    "tool_availability_license_and_cost": "NO_PROBADO",
+    "init_or_plan_commands_automatically_available": false,
+    "automatic_whole_repo_export": false,
+    "exclude_secrets_sensitive_files_and_unneeded_data": true,
+    "map_is_index_not_execution_evidence": true,
+    "scanner_states": [
+      "DOCUMENTADO",
+      "NO_EXISTE",
+      "NO_VERIFICABLE"
+    ],
+    "missing_requires_complete_accessible_snapshot": true,
+    "http_403_or_network_error": "NO_VERIFICABLE",
+    "refresh_on_commit_change": true
+  },
+  "filter": {
+    "rules": [
+      "Validar contrato reconocido, versión, tipo de documento y semántica; no exigir $schema indiscriminadamente a cualquier archivo o tool call.",
+      "Dedupe por clave y contenido normalizado; misma clave con contenido distinto es conflicto, no cache hit.",
+      "Agrupar sólo tareas compatibles en proveedor, permisos, privacidad, dependencia, límites de contexto y presupuesto.",
+      "Seleccionar capacidades efectivas comprobadas y costo/calidad adecuados, no marcas fijas ni modelo premium para todo.",
+      "Exigir resultados estructurados por task_id, incluyendo pendientes y errores honestos; validar estructura no prueba corrección semántica.",
+      "Sin autorización autenticada, contrato activable y permisos: BLOCK antes de side effects."
+    ],
+    "input_limits": {
+      "max_bytes": 1048576,
+      "max_depth": 32,
+      "reject_duplicate_keys": true,
+      "reject_nonfinite_numbers": true,
+      "utf8_required": true,
+      "remote_schema_resolution": "DENY"
+    },
+    "semantic_checks": [
+      "IDs únicos",
+      "DAG acíclico",
+      "dependencias existentes",
+      "rutas contenidas sin symlinks",
+      "adaptadores y verificadores allowlisted",
+      "SHAs y hashes fijados antes de ejecución",
+      "autoridad y presupuesto externos al payload"
+    ]
+  },
+  "skills": {
+    "load_by_task_and_verified_availability": true,
+    "candidates": [
+      "sequential-verifiable",
+      "mapa-del-repo",
+      "batch-multi-tarea"
+    ],
+    "activation": "Contrato explícito y adaptador compatible, no una cadena en $schema.",
+    "fixed_provider_or_haiku_only_rule": false,
+    "mcp_vs_skill": "Complementarios; usar conectores autorizados cuando hagan falta. No instalar por esta especificación.",
+    "agent_teams": "Sólo si separación de trabajo y permisos lo justifican; sin prohibición o aprobación universal."
+  },
+  "runtime": {
+    "implementation_status": "NO_IMPLEMENTADO_POR_ESTE_JSON",
+    "execution_host_after_authorization": "GitHub Actions",
+    "persistent_local_server_required": false,
+    "deterministic_scheduler_uses_llm_for_control_flow": false,
+    "cost_claim": "La lógica determinista no necesita tokens LLM; Actions, APIs, almacenamiento y modelos pueden tener cuotas y costos. No promete cero tokens ni cero costo para tareas generativas.",
+    "logger": {
+      "format": "JSONL",
+      "append_only": true,
+      "continuous": true,
+      "start_before_first_runtime_validation": true,
+      "path_template": "artifacts/{run_id}/events.jsonl",
+      "writer": "un supervisor por stream; workers por cola interna o streams separados",
+      "fields": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "batch_id",
+        "task_id",
+        "step_id",
+        "attempt",
+        "agent_id",
+        "provider_model",
+        "ts_utc",
+        "event",
+        "status",
+        "duration_monotonic_ms",
+        "error_sanitized",
+        "refs",
+        "supersedes"
+      ],
+      "human_time_zone": "America/Mexico_City",
+      "secrets_redacted": true,
+      "bounded_payloads": true,
+      "retention_days": 14,
+      "retention_subject_to_repository_policy": true,
+      "future_artifact_upload": "always al finalizar cuando sea técnicamente posible; un hard-kill puede impedirlo",
+      "missing_trace": "NO_VERIFICABLE; no demuestra que nunca ocurrió un side effect",
+      "publication_failure": "EVIDENCIA_INCOMPLETA; no declarar éxito verificable"
+    },
+    "sandbox": {
+      "workspace_template": "sandbox/{run_id}/{batch_id}/{task_id}/{attempt}",
+      "directory_is_security_boundary": false,
+      "current_mode": "SOLO_ESPECIFICACION",
+      "future_simulation_label": "SIMULADO_FIXTURE",
+      "arbitrary_untrusted_code_default": "DENY",
+      "required_before_untrusted_code": [
+        "aislamiento real revisado",
+        "sin secretos ni tokens de escritura",
+        "red deshabilitada o allowlist",
+        "fuentes readonly",
+        "límites de CPU, memoria y procesos",
+        "grupo de procesos terminable",
+        "rutas contenidas sin symlinks"
+      ],
+      "promotion": "Sólo escritor autorizado publica salidas verificadas y hashes, con permiso explícito; PASS no autoriza copiar a repo.",
+      "failure_policy": "Conservar evidencia sanitizada antes de limpiar workspace; no borrar la única prueba del fallo.",
+      "cleanup": "Sólo workspace temporal propio, tras persistir evidencia; fallo de persistencia bloquea limpieza que destruya evidencia única."
+    },
+    "queue": {
+      "max_concurrent_tasks": 3,
+      "default_execution_order": "secuencial; paralelizar sólo nodos independientes del DAG",
+      "one_worker_per_task_attempt": true,
+      "red_team": "una subcorrida por job/proceso Actions separado",
+      "durable_pending_records": true,
+      "github_concurrency_is_durable_queue": false,
+      "mutating_state_writer": "uno, compare-and-swap; conflictos visibles y reconciliados",
+      "reconciler_after_authorization": "releer pendientes persistidos tras eventos perdidos, cancelados o agrupados"
+    },
+    "cache": {
+      "algorithm": "sha256 de JSON canónico UTF-8 de campos explícitos",
+      "key_components": [
+        "normalized_task",
+        "input_hashes",
+        "repository_commit_shas",
+        "archetype_version",
+        "guardian_hash",
+        "adapter_hash",
+        "verifier_hash",
+        "provider_model_version",
+        "generation_parameters",
+        "policy_permissions_version",
+        "data_classification",
+        "execution_kind"
+      ],
+      "text_hash_alone_sufficient": false,
+      "eligible_status": "VERIFIED_REAL",
+      "exclude": [
+        "FAILED",
+        "PENDING",
+        "BLOCKED",
+        "EXPIRED",
+        "SIMULADO_FIXTURE",
+        "unverifiable",
+        "changed_permissions",
+        "changed_inputs_or_code"
+      ],
+      "real_execution_receipt_required": true,
+      "revalidate_hashes_verifier_and_authority_on_hit": true,
+      "hit_label": "CACHE_HIT_VERIFIED; no afirmar nueva ejecución",
+      "fixture_cache": "separada, sólo para pruebas simuladas autorizadas; jamás completar tarea real",
+      "ttl_seconds": 86400,
+      "sensitive_content_policy": "sin secretos; particionar por permisos/proyecto y no compartir resultados privados entre ámbitos"
+    },
+    "retry": {
+      "max_attempts_total": 3,
+      "max_retries": 2,
+      "backoff_seconds": [
+        5,
+        15
+      ],
+      "removed_45_second_delay_reason": "Tres intentos totales implican sólo dos esperas; 5/15/45 correspondería a cuatro intentos.",
+      "jitter": "acotado, sin sobrepasar deadline ni presupuesto",
+      "transient_errors_only": [
+        "network_transient",
+        "provider_5xx",
+        "rate_limited_after_retry_after"
+      ],
+      "respect_retry_after": true,
+      "never_retry_automatically": [
+        "permission_denied",
+        "authentication_failed",
+        "contract_invalid",
+        "guardian_block",
+        "semantic_verification_failed",
+        "budget_exhausted",
+        "cancelled"
+      ],
+      "timeout_with_unknown_side_effect": "reconciliar recibo/idempotencia antes de reintentar; si no se puede comprobar, BLOCK",
+      "bounded_by_task_deadline": true,
+      "no_infinite_restart_loop": true
+    },
+    "circuit_breaker": {
+      "scope_key": [
+        "provider",
+        "endpoint",
+        "model",
+        "credential_binding_id"
+      ],
+      "consecutive_transient_failure_threshold": 5,
+      "open_seconds": 600,
+      "half_open_max_probes": 1,
+      "half_open_success": "CLOSED, resetear contador",
+      "half_open_failure": "OPEN por otros 600 segundos, siempre limitado por deadline global",
+      "permission_or_auth_failure": "BLOQUEADO_CONFIGURACION; no sondear sin resolución explícita",
+      "persist_state_across_actions_runs": true,
+      "state_storage": "eventos con escritor único, timestamp UTC persistido; reloj monotónico para duraciones del proceso",
+      "open_action": "deferir pendiente, no ocupar worker durmiendo más allá del deadline",
+      "probe_is_llm_call_if_remote": true,
+      "probes_authorized_now": false
+    },
+    "rate_limiter": {
+      "strategy": "mínimo entre cuota real confirmada, Retry-After, tokens, concurrencia y presupuesto local aprobado",
+      "hardcoded_provider_free_tier_limits": false,
+      "quota_unknown_action": "BLOCK_PROVIDER",
+      "persistent_usage_counters": true,
+      "quota_sources": "cuenta/plan y documentación verificados cuando se autorice; nunca asumir 30/min o 14400/día",
+      "providers": [
+        {
+          "id": "groq",
+          "requests_per_minute": null,
+          "tokens_per_minute": null,
+          "requests_per_day": null,
+          "quota_window_time_zone": null,
+          "verified_at": null,
+          "status": "NO_PROBADO"
+        },
+        {
+          "id": "gemini",
+          "requests_per_minute": null,
+          "tokens_per_minute": null,
+          "requests_per_day": null,
+          "quota_window_time_zone": null,
+          "verified_at": null,
+          "status": "NO_PROBADO"
+        },
+        {
+          "id": "grok",
+          "requests_per_minute": null,
+          "tokens_per_minute": null,
+          "requests_per_day": null,
+          "quota_window_time_zone": null,
+          "verified_at": null,
+          "status": "NO_PROBADO"
+        }
+      ],
+      "grok_bot_app_and_api_have_interchangeable_quotas": false
+    },
+    "scheduler": {
+      "kind": "código determinista revisado",
+      "llm_required_for_queue_control": false,
+      "algorithm": "DAG con predecesores verificados, locks de rutas y prioridad; seleccionar luego grupo compatible",
+      "provider_failure_does_not_kill_control_plane": true,
+      "actions_is_24x7_daemon": false,
+      "max_run_seconds": 600,
+      "persist_deferred_items_and_resume_in_later_authorized_run": true,
+      "start_new_workflow_automatically_now": false
+    },
+    "executor": {
+      "adapter_registry": "allowlist fija de código revisado; no resolver IDs de adaptador como comandos del payload",
+      "shell_from_model_output": "DENY",
+      "dependencies_verified_before_start": true,
+      "worker_has_repository_write_credentials": false,
+      "partial_failure_policy": "Bloquear descendientes; continuar independientes sólo si el contrato y presupuesto lo permiten."
+    },
+    "verifier": {
+      "creator_must_differ_from_verifier": true,
+      "same_llm_self_report_counts_as_verification": false,
+      "structural_checks": [
+        "JSON estricto",
+        "IDs completos sin duplicados",
+        "archivo presente y no vacío",
+        "tipo, tamaño y formato según contrato"
+      ],
+      "semantic_checks": [
+        "criterios específicos de aceptación por tarea",
+        "contenido coherente con entradas",
+        "fuentes y corte temporal si aplica",
+        "hashes y provenance",
+        "recibo de ejecución real",
+        "no cambios Engine/244",
+        "adaptador verificador independiente"
+      ],
+      "subjective_quality": "Auditor independiente si el contrato lo exige; pruebas deterministas no certifican por sí solas calidad narrativa o semántica.",
+      "no_semantic_verifier": "NO_VERIFICABLE; no promover a VERIFIED",
+      "required_component_not_executed": "FALLO_EJECUCION",
+      "fixture": "SIMULADO_FIXTURE, jamás EJECUTADO",
+      "contractual_omission": "INFO_OMISION_CONTRACTUAL con referencia de contrato",
+      "unknown_state": "REQUIERE_CONTRATO",
+      "current_preparation_hold": "PENDIENTE_POR_INSTRUCCION_DE_MJ, no intento fallido del motor"
+    },
+    "smoke_test": {
+      "enabled_now": false,
+      "future_policy": "Gate de infraestructura antes de batch grande autorizado; la política puede permitir reutilizar recibo vigente con mismas versiones/hashes, nunca omitir evidencia.",
+      "gate_conditions": [
+        "activación aprobada",
+        "contratos y mapa fijados",
+        "sin fallo previo de guardianes",
+        "presupuesto"
+      ],
+      "fixture_smoke_certifies": "infraestructura simulada solamente",
+      "certifies_real_model_conversation_or_motor": false,
+      "failure_action": "bloquear batch dependiente sin gastar llamadas LLM",
+      "run_on_every_batch_now": false
+    },
+    "monitor": {
+      "task_heartbeat_seconds": 5,
+      "telemetry_summary_seconds": 60,
+      "metrics": [
+        "pending",
+        "running",
+        "verified",
+        "failed",
+        "blocked",
+        "latency_ms",
+        "tokens_reported",
+        "cost_reported",
+        "retry_count",
+        "queue_depth",
+        "last_verified_progress"
+      ],
+      "missing_token_or_cost_value": null,
+      "unknown_usage_is_not_zero": true,
+      "heartbeat_is_success_or_progress": false
+    },
+    "watchdog": {
+      "clock_for_elapsed_time": "monotonic",
+      "stale_after_seconds": 20,
+      "default_task_timeout_seconds": 120,
+      "hard_task_timeout_seconds": 120,
+      "run_wall_timeout_seconds": 600,
+      "sum_of_attempts_waits_and_verification_must_fit_task_deadline": true,
+      "keep_heartbeat_does_not_extend_deadline": true,
+      "kill": "terminar grupo de procesos, recoger salida y persistir error; Future.cancel no basta",
+      "restart": "sólo transient + idempotencia probada + reintentos restantes + permiso; no reinicio infinito",
+      "resume_from": "último checkpoint VERIFIED_REAL íntegro; nunca desde instrucción a medias",
+      "no_checkpoint": "reiniciar sólo tarea idempotente tras reconciliar efectos o BLOCK"
+    },
+    "checkpoints": {
+      "state_machine": [
+        "PENDING",
+        "RUNNING",
+        "EXECUTED",
+        "VERIFIED",
+        "CHECKPOINTED"
+      ],
+      "required_before_checkpoint": [
+        "ejecución real",
+        "verificación independiente aprobada",
+        "hashes de entrada/salida/código/contrato",
+        "recibos y provenance",
+        "candados intactos"
+      ],
+      "checkpoint_for_fixture_or_ack_or_heartbeat": false,
+      "write_method": "supervisor, temp + fsync + atomic rename; manifiesto y artefacto durable",
+      "fields": [
+        "run_id",
+        "job_id",
+        "task_id",
+        "step_id",
+        "attempt",
+        "source_commit",
+        "input_hashes",
+        "output_hashes",
+        "adapter_hash",
+        "verifier_hash",
+        "guardian_hash",
+        "contract_hash",
+        "verdict",
+        "evidence_refs"
+      ],
+      "resume_requires_exact_hash_match": true,
+      "github_actions_workspace_is_persistent_storage": false,
+      "resume_downloads_pinned_artifact_and_checks_manifest": true,
+      "missing_durable_evidence": "CHECKPOINT_NO_RECUPERABLE",
+      "pickle_or_executable_serialization": "DENY"
+    }
+  },
+  "agent_bus": {
+    "enabled": false,
+    "dispatch_enabled": false,
+    "transport": "github_files",
+    "message_schema_source": "Instrucción base, sección 4.1 $defs/Message",
+    "config_schema_source": "Instrucción base, sección 4.1 $defs/Config",
+    "source_of_truth": "COORDINATION/bus/messages/{message_id}.json inmutable",
+    "events": "COORDINATION/bus/events/{event_id}.json inmutable",
+    "indexes": [
+      "COORDINATION/bus/agents/{agent_id}/inbox.jsonl",
+      "COORDINATION/bus/agents/{agent_id}/outbox.jsonl"
+    ],
+    "correlation": [
+      "message_id",
+      "conversation_id",
+      "instruction_id",
+      "parent_id",
+      "in_reply_to",
+      "idempotency_key"
+    ],
+    "max_hops": 6,
+    "max_turns": 6,
+    "lease_seconds": 120,
+    "max_attempts": 3,
+    "delivery": "at least once con dedupe y recibos; no exactamente una entrega de red",
+    "identity": "binding del conector/GitHub App con permiso comprobado, no el campo from_agent",
+    "fencing_token_required": true,
+    "expired_lease_cannot_commit": true,
+    "ack_proves": "recepción observada solamente; no éxito, no autorización y no checkpoint",
+    "ack_to_ack": "DENY",
+    "no_receiver_or_endpoint": "PENDIENTE_RECEPTOR",
+    "github_token_cross_repo_access_assumed": false,
+    "cross_repo_credentials": "GitHub App mínima sólo tras aprobación; no obtener ni configurar ahora",
+    "dispatch_contract_future": "tipo fijo y payload de ID/ref permitido; no shell; receptor presente en rama por defecto",
+    "push_from_github_token_is_delivery_trigger": false,
+    "web_chat_session_automation": "DENY",
+    "llm_batch_is_substitute_for_agent_bus": false
+  },
+  "batch": {
+    "enabled": false,
+    "type": "logical_batch_with_compatible_provider_subgroups",
+    "one_network_request_for_all_models": false,
+    "group_keys": [
+      "provider_binding",
+      "model",
+      "permissions",
+      "data_classification",
+      "dependency_frontier",
+      "context_budget"
+    ],
+    "one_response_per_task_id": true,
+    "partial_responses": "Registrar faltantes, errores y pendientes; no descartar resultados correctos ni inventar completados. Reintentar sólo tareas elegibles.",
+    "all_tasks_same_prompt_required": false,
+    "request_example": {
+      "batch_id": "BATCH-DRAFT-001",
+      "execution_authorized": false,
+      "tasks": [
+        {
+          "id": "T-DOC-001",
+          "to_agent": "coordinator",
+          "task_type": "document_review",
+          "instruction": "BORRADOR: revisar coherencia documental sin ejecutar.",
+          "depends_on": [],
+          "provider_binding": null,
+          "status": "PREPARADO"
+        },
+        {
+          "id": "T-AUDIT-001",
+          "to_agent": "motor-u6-specialist",
+          "task_type": "independent_audit",
+          "instruction": "BORRADOR: revisar referencias CEB y candados; no ejecutar motor.",
+          "depends_on": [
+            "T-DOC-001"
+          ],
+          "provider_binding": null,
+          "status": "PREPARADO"
+        }
+      ]
+    },
+    "response_example": {
+      "batch_id": "BATCH-DRAFT-001",
+      "results": [
+        {
+          "id": "T-DOC-001",
+          "ok": false,
+          "status": "PENDING",
+          "result": null,
+          "reason": "NO_EJECUTADO_POR_INSTRUCCION_DE_MJ",
+          "evidence_refs": [],
+          "verified": false,
+          "execution_kind": "NONE"
+        },
+        {
+          "id": "T-AUDIT-001",
+          "ok": false,
+          "status": "PENDING",
+          "result": null,
+          "reason": "NO_EJECUTADO_POR_INSTRUCCION_DE_MJ",
+          "evidence_refs": [],
+          "verified": false,
+          "execution_kind": "NONE"
+        }
+      ]
+    },
+    "ok_semantics": "true sólo si criterio de tarea satisfecho y verificado; false no distingue fallo de pendiente: consultar status y reason. Cache hit válido se etiqueta y refiere recibo original.",
+    "provider_assignment_requires_capability_check": true
+  },
+  "model_routing": {
+    "strategy": "capacidad y permisos observados, calidad requerida, privacidad, costo y cuota; determinista para control de cola",
+    "fixed_brand_to_task_contracts": false,
+    "fixed_model_or_free_api_assumptions": false,
+    "mechanical_work": "código/herramienta determinista revisada, no LLM por defecto",
+    "capability_registry": "REGISTRY/AGENTS.yaml y evidencia vigente por binding",
+    "unassigned_agent_is_connected": false,
+    "unknown_provider_status": "NO_PROBADO",
+    "automatic_paid_fallback": false,
+    "budget": {
+      "additional_spend_authorized": false,
+      "max_additional_spend": 0,
+      "currency": "MXN",
+      "zero_cost_provider_claim_verified": false
+    }
+  },
+  "hooks": {
+    "status": "CONTRATOS_PROPUESTOS_NO_HOOKS_INSTALADOS",
+    "framework_pretooluse_assumed_available": false,
+    "pre_operation": [
+      "validar contrato según tipo, alcance y mandato autenticado",
+      "bloquear .env, credenciales, Engine/244 y rutas protegidas",
+      "bloquear shell/code generado, traversal y acceso fuera de allowlist",
+      "verificar presupuesto, permisos y deadline"
+    ],
+    "post_operation": [
+      "emitir evento continuo",
+      "validar estructura y criterios semánticos de salida",
+      "no promover vacío, stub, fixture o pieza no ejecutada a VERIFIED",
+      "preservar evidencia de fallo antes de limpieza"
+    ],
+    "failed_hook_or_missing_required_hook": "BLOCK"
+  },
+  "steps": [
+    {
+      "id": "S01_VALIDATE",
+      "adapter_id": "validate_contract_authority",
+      "verify_adapter_id": "verify_validation_receipt",
+      "depends_on": [],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Validar entrada, DAG, mandato y candados; logger ya activo desde bootstrap del runtime futuro."
+    },
+    {
+      "id": "S02_MAP",
+      "adapter_id": "read_pinned_repository_map",
+      "verify_adapter_id": "verify_map_provenance",
+      "depends_on": [
+        "S01_VALIDATE"
+      ],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Consultar índices y snapshots fijados, antes de smoke o acceso al modelo."
+    },
+    {
+      "id": "S03_SMOKE_GATE",
+      "adapter_id": "evaluate_authorized_smoke_gate",
+      "verify_adapter_id": "verify_smoke_scope_and_receipt",
+      "depends_on": [
+        "S02_MAP"
+      ],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Diseño futuro: correr smoke autorizado o comprobar recibo vigente permitido; actualmente BLOCK sin ejecutar."
+    },
+    {
+      "id": "S04_CACHE",
+      "adapter_id": "lookup_verified_scoped_cache",
+      "verify_adapter_id": "verify_cache_hashes_and_authority",
+      "depends_on": [
+        "S03_SMOKE_GATE"
+      ],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Reutilizar sólo evidencia real vigente, sin simular nueva ejecución."
+    },
+    {
+      "id": "S05_QUEUE",
+      "adapter_id": "enqueue_eligible_dag_tasks",
+      "verify_adapter_id": "verify_queue_leases_and_limits",
+      "depends_on": [
+        "S04_CACHE"
+      ],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Encolar misses; rutas con cache hit continúan a verificación sin worker nuevo."
+    },
+    {
+      "id": "S06_ISOLATE",
+      "adapter_id": "prepare_reviewed_task_isolation",
+      "verify_adapter_id": "verify_isolation_policy",
+      "depends_on": [
+        "S05_QUEUE"
+      ],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Sólo tareas que requieren worker; carpeta sola no equivale a sandbox."
+    },
+    {
+      "id": "S07_EXECUTE",
+      "adapter_id": "route_compatible_task_groups",
+      "verify_adapter_id": "verify_per_task_execution_receipts",
+      "depends_on": [
+        "S06_ISOLATE"
+      ],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Diseño futuro de grupos compatibles/bus; cuotas, circuit breaker, reintentos y watchdog transversales."
+    },
+    {
+      "id": "S08_VERIFY",
+      "adapter_id": "verify_each_task_result",
+      "verify_adapter_id": "audit_verifier_receipts",
+      "depends_on": [
+        "S07_EXECUTE"
+      ],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Verificación independiente estructural y semántica; cache hits también revalidados."
+    },
+    {
+      "id": "S09_CHECKPOINT",
+      "adapter_id": "persist_verified_checkpoints",
+      "verify_adapter_id": "verify_durable_manifests",
+      "depends_on": [
+        "S08_VERIFY"
+      ],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Sólo resultados reales verificados. Fixture/ACK no crean checkpoint de producción."
+    },
+    {
+      "id": "S10_FINALIZE",
+      "adapter_id": "finalize_evidence_then_cleanup",
+      "verify_adapter_id": "verify_final_report_and_protected_hashes",
+      "depends_on": [
+        "S09_CHECKPOINT"
+      ],
+      "required": true,
+      "planned_only": true,
+      "purpose": "Cerrar reporte y conservar evidencia; limpieza segura, publicación sólo con permiso específico."
+    }
+  ],
+  "step_contract": {
+    "adapter_ids_status": "PROPUESTOS_NO_IMPLEMENTADOS_NO_ALLOWLISTADOS_AUN",
+    "top_level_steps_is_only_authoritative_steps_array": true,
+    "steps_describe_stage_order_not_a_second_runtime_engine": true,
+    "cache_hit_branch": "S05-S07 sólo requieren worker para misses; hits válidos van a S08 con recibo original, sin simular etapas ejecutadas.",
+    "conditional_omissions_require_contract_receipt": true,
+    "failure_finalizer": "Persistir error y evidencia cuando sea posible aun si S01-S09 fallan; S10 no es único camino de finalización.",
+    "logger_monitor_watchdog_are_lifecycle_services": true,
+    "each_real_checkpoint_requires_independent_verified_receipt": true,
+    "per_task_checkpoint": "El runtime materializado debe guardar cada paso real verificado al concluir, no esperar al final del batch; S09 reconcilia y persiste manifiestos pendientes."
+  },
+  "expected_output": {
+    "current": "Sólo especificación JSON y anexo local; sintaxis leída con json.load, sin prueba funcional, ejecución ni commit.",
+    "future": "Resultados por todas las tareas con estados honestos, errores y provenance; JSONL continuo, manifiestos, checkpoints válidos y evidencia de candados.",
+    "current_runtime_test_status": "NO_EJECUTADO_POR_INSTRUCCION_DE_MJ",
+    "json_load_is_runtime_or_schema_validation": false,
+    "whole_runtime_implemented_by_json": false,
+    "all_programs_need_exactly_this_stack": false
+  }
+}
