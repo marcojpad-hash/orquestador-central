@@ -1,14 +1,17 @@
-"""Shared Qwen3-TTS voice service. Requires an authorized reference recording."""
+"""Shared Qwen3-TTS voice service. Reference audio is generated locally from an original voice design."""
 from __future__ import annotations
 
 import json
 import os
+import secrets
 from pathlib import Path
 from threading import Lock
+from uuid import uuid4
 
 import soundfile as sf
 import torch
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from qwen_tts import Qwen3TTSModel
 
@@ -16,6 +19,7 @@ ROOT = Path(__file__).resolve().parent
 PROFILE_PATH = Path(os.getenv("VOICE_PROFILE", ROOT / "voice_profile.json"))
 DEVICE_MAP = os.getenv("VOICE_DEVICE_MAP", "cuda:0")
 DTYPE = getattr(torch, os.getenv("VOICE_DTYPE", "bfloat16"))
+API_TOKEN = os.getenv("VOICE_API_TOKEN", "")
 app = FastAPI(title="Shared Voice Core", version="0.1.0")
 model = None
 clone_prompt = None
@@ -25,7 +29,6 @@ lock = Lock()
 
 class SynthesisRequest(BaseModel):
     text: str = Field(min_length=1, max_length=12000)
-    output_path: str | None = None
 
 
 @app.on_event("startup")
@@ -36,15 +39,17 @@ def load_voice():
     profile = json.loads(PROFILE_PATH.read_text(encoding="utf-8"))
     audio = (ROOT / profile["reference_audio"]).resolve()
     if not audio.is_file():
-        raise RuntimeError(f"Authorized reference audio missing: {audio}")
-    if (not profile.get("reference_text") or profile["reference_text"].startswith("TRANSCRIPCION_") or profile["reference_text"].startswith("GENERATED_BY_")):
-        raise RuntimeError("Set the exact transcript of the reference recording.")
+        raise RuntimeError(f"Voice reference missing: {audio}")
+    reference_text = profile.get("reference_text", "")
+    if (not reference_text or reference_text.startswith("TRANSCRIPCION_")
+            or reference_text.startswith("GENERATED_BY_")):
+        raise RuntimeError("Generate the reference first with bootstrap_voice.py.")
     model = Qwen3TTSModel.from_pretrained(
         profile["model"], device_map=DEVICE_MAP, dtype=DTYPE
     )
     clone_prompt = model.create_voice_clone_prompt(
         ref_audio=str(audio),
-        ref_text=profile["reference_text"],
+        ref_text=reference_text,
         x_vector_only_mode=bool(profile.get("x_vector_only_mode", False)),
     )
 
@@ -60,7 +65,12 @@ def health():
 
 
 @app.post("/synthesize")
-def synthesize(req: SynthesisRequest):
+def synthesize(req: SynthesisRequest, authorization: str | None = Header(default=None)):
+    if not API_TOKEN:
+        raise HTTPException(503, "Set VOICE_API_TOKEN before enabling synthesis")
+    expected = f"Bearer {API_TOKEN}"
+    if not authorization or not secrets.compare_digest(authorization, expected):
+        raise HTTPException(401, "Invalid bearer token")
     if model is None or clone_prompt is None:
         raise HTTPException(503, "Voice model is not loaded")
     try:
@@ -73,13 +83,15 @@ def synthesize(req: SynthesisRequest):
             )
         if not wavs:
             raise RuntimeError("Model returned no audio")
-        output = Path(req.output_path) if req.output_path else ROOT / "out" / "speech.wav"
-        if not output.is_absolute():
-            output = (ROOT / output).resolve()
-        output.parent.mkdir(parents=True, exist_ok=True)
+        out_dir = ROOT / "out"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        output = out_dir / f"{uuid4().hex}.wav"
         sf.write(str(output), wavs[0], sr)
-        return {"status": "generated", "voice_id": profile["voice_id"],
-                "engine": "qwen3-tts", "sample_rate": sr,
-                "output_path": str(output), "samples": int(len(wavs[0]))}
+        return FileResponse(
+            output,
+            media_type="audio/wav",
+            filename=output.name,
+            headers={"X-Voice-ID": profile["voice_id"], "X-Sample-Rate": str(sr)},
+        )
     except Exception as exc:
         raise HTTPException(500, f"Synthesis failed: {type(exc).__name__}: {exc}") from exc
