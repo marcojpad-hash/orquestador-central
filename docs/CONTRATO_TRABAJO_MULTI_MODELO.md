@@ -213,3 +213,29 @@ El contrato se considera implantado en un proyecto cuando:
 - Se documentan las excepciones y bloqueos reales.
 
 **Regla final:** ningún modelo es “el que puede todo”. Se asigna cada trabajo al agente que efectivamente tiene el modelo, herramienta, permiso y entorno adecuados; si no los tiene, debe demostrarlo y enrutar la tarea al que sí.
+
+
+## 15. Regla de cierre operativo y recuperación
+
+Una tarea no se cierra con una lista de pendientes cuando todavía existen rutas técnicas razonables dentro de las capacidades y permisos disponibles.
+
+Secuencia obligatoria:
+1. Ejecutar la solución acordada, no limitarse a describirla.
+2. Probarla en el entorno real disponible; distinguir prueba estructural, prueba de integración y prueba de uso real.
+3. Si falla, capturar el error, corregir la causa y repetir.
+4. Si la ruta elegida no es viable, investigar e implementar una alternativa funcional equivalente.
+5. Repetir el ciclo mientras existan alternativas técnicamente viables y autorizadas.
+6. Si el último bloqueo depende realmente de una intervención externa, dejar evidencia reproducible, identificar la capa exacta y pedir únicamente esa intervención.
+
+No trasladar a Mj tareas que el agente puede ejecutar con las herramientas y permisos disponibles. No declarar una prueba real cuando solo pasó un validador estático. No detenerse ante errores recuperables ni presentar una limitación propia como imposibilidad general.
+
+## 16. Servicios compartidos y componentes reutilizables
+
+Cuando varios proyectos necesiten la misma capacidad (por ejemplo, una identidad de voz, OCR, embeddings o transcripción), priorizar un servicio compartido versionado en `orquestador-central` y clientes delgados en cada proyecto. La configuración JSON no sustituye los pesos del modelo, los datos de referencia ni el runtime.
+
+Para voz sintética:
+- Una identidad de voz debe tener un identificador estable, modelo/checkpoint fijado, referencia autorizada, idioma, transcripción exacta y parámetros versionados.
+- Los consumidores llaman al mismo servicio; no vuelven a escoger o recrear la voz en cada proyecto.
+- No clonar voces de terceros sin autorización ni confundir la licencia del código/pesos con los derechos sobre la grabación de referencia.
+- Mantener muestras de control y pruebas de estabilidad; no declarar equivalencia perceptual sin comparación auditiva.
+- Los pesos, referencias privadas, credenciales y grabaciones no se suben al repositorio. Se versionan perfiles sin secretos y hashes/metadatos no sensibles.
