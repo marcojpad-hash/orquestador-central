@@ -1,0 +1,47 @@
+name: Sequential Verifiable Runner
+on:
+  workflow_dispatch:
+    inputs:
+      input_path:
+        description: Marked JSON contract path
+        required: true
+        default: examples/sequential-verifiable-v1.example.json
+      timeout_seconds:
+        description: Per-command timeout
+        required: true
+        default: "120"
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sequential-runner-${{ github.ref }}-${{ inputs.input_path }}
+  cancel-in-progress: false
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout trusted repository revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Execute marked contract
+        env:
+          INPUT_PATH: ${{ inputs.input_path }}
+          STEP_TIMEOUT: ${{ inputs.timeout_seconds }}
+        run: |
+          python runtime/sequential_runner.py --input "$INPUT_PATH" --timeout "$STEP_TIMEOUT"
+      - name: Preserve execution log and output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sequential-run-${{ github.run_id }}
+          path: |
+            runtime/runs/
+            artifacts/
+          if-no-files-found: warn
+          retention-days: 14
