@@ -2,22 +2,32 @@
   "$schema": "https://github.com/marcojpad-hash/orquestador-central/blob/main/schemas/sequential-verifiable-v1.schema.json",
   "_contract": "SEQUENTIAL-VERIFIABLE-v1",
   "id": "example-001",
-  "project": "sample-project",
-  "version": "1.0",
+  "project": "orquestador-central-runtime",
+  "version": "1.1",
   "steps": [
     {
-      "name": "validate-input",
+      "name": "generate-demo-output",
       "action": "python runtime/demo_step.py --input examples/sequential-verifiable-v1.example.json --output artifacts/demo-result.txt",
-      "expected": "Input passes structural validation",
+      "expected": "Demo output is generated",
       "verify": "python runtime/verify_file.py --path artifacts/demo-result.txt --min-bytes 1",
-      "retry_safe": true
-    },
-    {
-      "name": "build-output",
-      "action": "Generate the declared output from the validated input",
-      "expected": "Output file exists and is non-empty",
-      "verify": "python scripts/verify_output.py output/result.txt",
-      "retry_safe": false
+      "retry_safe": true,
+      "preconditions": [],
+      "postconditions": [
+        {
+          "kind": "exists",
+          "path": "artifacts/demo-result.txt"
+        },
+        {
+          "kind": "min_bytes",
+          "path": "artifacts/demo-result.txt",
+          "value": 1
+        },
+        {
+          "kind": "contains",
+          "path": "artifacts/demo-result.txt",
+          "value": "SEQUENTIAL-VERIFIABLE demo PASS"
+        }
+      ]
     }
   ],
   "expected_output": {
