@@ -8,7 +8,7 @@ Orquestador central: plano de control, reglas globales, memoria compartida, regi
 4. [Registro de capacidades](docs/CAPACIDADES_MODELOS.md) — capacidades verificadas por interfaz y sesión.
 5. [Plantilla de handoff](docs/PLANTILLA_HANDOFF_MULTI_MODELO.md) — continuidad entre agentes.
 
-## Inicio obligatorio para cualquier modelo
+6. [Cómo trabajar con Mj](docs/COMO_TRABAJAR_CON_MJ.md) — contrato de interacción; no es un runner.\n7. [Guardianes operativos agnósticos](docs/GUARDIANES_OPERATIVOS_AGNOSTICOS.md) — funciones neutrales de control operativo.\n8. [ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1](docs/ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1.md) — familia opcional activada solo por marca.\n9. [JSON Schema](schemas/sequential-verifiable-v1.schema.json) y [ejemplo X](examples/sequential-verifiable-v1.example.json).\n\n## Inicio obligatorio para cualquier modelo
 1. Leer las reglas operativas universales.
 2. Leer la arquitectura y el contrato multi-modelo.
 3. Declarar/actualizar capacidades en el registro.
