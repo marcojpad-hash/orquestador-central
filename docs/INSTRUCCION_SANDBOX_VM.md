@@ -1,5 +1,7 @@
 # Runner integrado + sandbox de pruebas U6 en GitHub Actions
 
+> **Entrada de continuidad vigente:** leer primero [`COORDINATION/COMO_TRABAJAMOS.md`](../COORDINATION/COMO_TRABAJAMOS.md). Los límites de entrega de revisiones anteriores son históricos; el mandato documental actual permite actualizar instrucciones, JSON de especificación y punteros, sin ejecutar ni activar nada. Publicación documental directa sólo por autorización específica, no excepción permanente a PR/merge.
+
 **Instrucción documental para Grok App; alternativa: otro agente con permisos efectivos comprobados.**
 **Propietario: Mj. Fecha: 8 de noviembre de 2026, CDMX (America/Mexico_City, UTC−6).**
 
@@ -45,6 +47,8 @@ Leer `docs/SPEC_RE_TEAM_WHITE_HAT_HOMEOSTASIS_U6.md`, `ledger/ACTIVE.md` y `.git
 Antes de implementar, recuperar SHA completo de cada fuente, revisar cambios recientes y contratos locales; fijar referencias y hashes en un manifiesto. No asumir que Contents/PR write permite modificar workflows, disparar Actions o administrar protección de ramas.
 
 ## 2. La “VM” correcta para nuestra forma de trabajar
+
+**Ámbito:** este documento define el job aislado de pruebas, no el servicio permanente que Mj pidió después. El gateway/cola always-on vive en una VM/VPS según [`INSTRUCCION_VM_AGENTES_CODIGO.md`](INSTRUCCION_VM_AGENTES_CODIGO.md); sus jobs pueden usar esta sandbox. Codespaces no sustituye esa máquina persistente. Todo sigue documental y apagado.
 
 - **Rama `sandbox-testing`:** referencia Git de trabajo creada desde un SHA de `main`, no clon físico ni aislamiento de ejecución. No contiene ni protege secretos por ser rama distinta.
 - **VM de ejecución:** un job efímero `ubuntu-24.04` hospedado por GitHub Actions, con checkout del SHA exacto de `sandbox-testing` autorizado. Mj no aporta un servidor ni usa la box del bot.
@@ -347,10 +351,10 @@ Si se elige Compose: imagen fijada por digest, sin `build: .` arbitrario sin rev
 
 El publicador centraliza escritura y verifica diff de commit limitado a avances. No publicar secretos, entradas sensibles ni el workspace entero. Conservar evidencia de fallo antes de limpiar; error de artefacto/commit se reporta, no se traga con `|| true`. Una nueva evidencia commit cambia HEAD: el reporte debe distinguir **SHA de código probado** de **SHA de commit de evidencia**. La promoción exige probar/verificar el SHA final candidato o acreditar rigurosamente el diff sólo documental; preferir nuevo run fijado si hay duda. No fingir que un check de un SHA viejo cubre el PR actual.
 
-Promoción a `main` exclusivamente mediante PR, con:
+Promoción de motor/runtime/infraestructura a `main` exclusivamente mediante PR, con:
 
 - Diff acotado a laterales/runner y documentación autorizados, sin Engine/244 ni cambio de contrato canónico.
-- CEB verde real, candados y pruebas de aceptación del SHA candidato; fixtures separados.
+- CEB verde real para alcance motor, candados y pruebas de aceptación del SHA candidato; fixtures separados. Un PR de bootstrap sin ejecución de motor usa checks propios y declara CEB no aplicable, no inventa verde. Publicación documental puntual sigue la autorización específica descrita en COMO_TRABAJAMOS, sin saltar protecciones.
 - Baseline y recibos vigentes; resolución de conflictos sin force-push ni regeneración evasiva de hashes.
 - Protección de `main`: PR obligatorio, checks requeridos, sin force-push/borrado ni bypass por el bot; invalidar aprobaciones al cambiar contenido relevante. Si no está configurada, informar al administrador autorizado; Contents/PR write no permite garantizarla ni habilitarla por sí solo.
 - **Un único “merge” explícito de Mj**, asociado al PR y SHA ya revisados. No sustituirlo por un verde, etiqueta, texto del LLM o aprobación de otro agente. Si cambia el SHA de código tras aprobar, la autorización anterior no cubre ese cambio.
