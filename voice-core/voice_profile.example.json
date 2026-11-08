@@ -1,0 +1,11 @@
+{
+  "voice_id": "narrador_es_mx_01",
+  "engine": "qwen3-tts",
+  "model": "Qwen/Qwen3-TTS-12Hz-1.7B-Base",
+  "language": "Spanish",
+  "reference_audio": "voices/narrador_es_mx_01/reference.wav",
+  "reference_text": "TRANSCRIPCION_EXACTA_DE_LA_GRABACION",
+  "x_vector_only_mode": false,
+  "instruction": "Español mexicano neutro. Voz masculina adulta, cálida pero sobria, articulación clara, ritmo estable, sin actuación exagerada.",
+  "sample_rate": 24000
+}
