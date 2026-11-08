@@ -7,9 +7,9 @@
   "steps": [
     {
       "name": "validate-input",
-      "action": "Run the project's input validator",
+      "action": "python runtime/demo_step.py --input examples/sequential-verifiable-v1.example.json --output artifacts/demo-result.txt",
       "expected": "Input passes structural validation",
-      "verify": "python scripts/validate_input.py input.json",
+      "verify": "python runtime/verify_file.py --path artifacts/demo-result.txt --min-bytes 1",
       "retry_safe": true
     },
     {
@@ -22,7 +22,7 @@
   ],
   "expected_output": {
     "type": "file",
-    "path": "output/result.txt",
+    "path": "artifacts/demo-result.txt",
     "min_count": 1,
     "min_length": 1
   }
