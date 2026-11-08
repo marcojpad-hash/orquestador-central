@@ -1,0 +1,29 @@
+{
+  "$schema": "https://github.com/marcojpad-hash/orquestador-central/blob/main/schemas/sequential-verifiable-v1.schema.json",
+  "_contract": "SEQUENTIAL-VERIFIABLE-v1",
+  "id": "example-001",
+  "project": "sample-project",
+  "version": "1.0",
+  "steps": [
+    {
+      "name": "validate-input",
+      "action": "Run the project's input validator",
+      "expected": "Input passes structural validation",
+      "verify": "python scripts/validate_input.py input.json",
+      "retry_safe": true
+    },
+    {
+      "name": "build-output",
+      "action": "Generate the declared output from the validated input",
+      "expected": "Output file exists and is non-empty",
+      "verify": "python scripts/verify_output.py output/result.txt",
+      "retry_safe": false
+    }
+  ],
+  "expected_output": {
+    "type": "file",
+    "path": "output/result.txt",
+    "min_count": 1,
+    "min_length": 1
+  }
+}
