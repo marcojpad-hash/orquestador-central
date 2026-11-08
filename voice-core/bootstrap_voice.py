@@ -34,6 +34,10 @@ def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     sf.write(str(OUT), wavs[0], sr)
     (OUT.parent / "reference.txt").write_text(TEXT, encoding="utf-8")
+    PROFILE["reference_text"] = TEXT
+    (ROOT / "voice_profile.json").write_text(
+        json.dumps(PROFILE, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8"
+    )
     print(f"REFERENCE_CREATED={OUT}")
     print(f"SAMPLE_RATE={sr}; SAMPLES={len(wavs[0])}")
 
