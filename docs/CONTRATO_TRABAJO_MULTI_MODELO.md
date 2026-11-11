@@ -113,6 +113,7 @@ Objetivo: minimizar gasto adicional de tokens/API. No prometer costo cero univer
 - Aplicar mínimo privilegio: lectura para quien solo inspecciona; escritura solo a agentes que deban entregar cambios.
 - No convertir todos los colaboradores en administradores para resolver un 403. Primero identificar si el bloqueo es permiso de repo, protección de rama, reglas de organización, SSO, token o política del proveedor.
 - Preferir ramas de trabajo y PR; proteger ramas canónicas y archivos críticos.
+- **Excepción operativa — workflows automatizados (2026-11-10):** los 4 workflows de motor-u6-storage que empujan directo a main (`auditar-corridas-actions`, `fabrica-lote-diario`, `fabrica-real-traza`, `update-mortality-wpp`) están exentos del PR porque son automatizados y solo escriben artefactos generados en rutas designadas (`avances/`, `casos/fabrica/`, `motor/*MANIFIESTO*`/`SHA256SUMS*`, `motor/MORTALITY_AUDIT/`). **Candado:** nunca tocan el Engine (V5), el catálogo 244 ni código de `motor/` fuera de manifiestos. Cualquier otro cambio a main sigue requiriendo PR y merge de Mj.
 - Un agente no puede concederse permisos a sí mismo. Solo el propietario/administrador autorizado puede cambiar colaboradores, roles o reglas de protección.
 - Cualquier cambio de permisos debe registrar identidad GitHub exacta, repositorio, permiso anterior, permiso nuevo, razón y resultado. No inferir la identidad de Copilot, Grok o Claude a partir del nombre comercial.
 
