@@ -1,0 +1,10 @@
+{
+  "agente": "gpt-oss",
+  "descripcion": "openai/gpt-oss-120b por Groq gratis, corre en Actions (relevo)",
+  "version": "1",
+  "puede": ["leer:github", "coordinar:tablero", "abrir:issue_aviso"],
+  "no_puede": ["correr:navegador", "tts:jorge_neural", "crear:repos_por_actions"],
+  "transporte": ["bus_repo"],
+  "verificado": {},
+  "notas": "Relevo cuando Muse se queda sin tokens (baterias-tokens/RELEVO.md). Workflow relevo.yml aún no subido."
+}
