@@ -1,0 +1,10 @@
+{
+  "agente": "grok",
+  "descripcion": "Grok App (GitHub App xAI, installation 177287686)",
+  "version": "1",
+  "puede": ["leer:github", "escribir:github_contents", "escribir:github_pr", "correr:actions"],
+  "no_puede": ["correr:shell_box"],
+  "transporte": ["bus_repo"],
+  "verificado": {"escribir:github_contents": true},
+  "notas": "Escritura comprobada (probe 2a24678 en motor-u6-storage). Sin terminal propia."
+}

@@ -1,0 +1,10 @@
+{
+  "agente": "puta3",
+  "descripcion": "Grok Bot (Puta 3): coordinador con box Linux propio",
+  "version": "1",
+  "puede": ["leer:github", "escribir:github_pr", "leer:notion", "leer:drive", "leer:gmail", "leer:pdf", "correr:shell_box", "correr:navegador", "tts:jorge_neural", "leer:youtube_publico"],
+  "no_puede": ["correr:largo_sin_creditos"],
+  "transporte": ["mcp", "bus_repo"],
+  "verificado": {"leer:github": true, "escribir:github_pr": true, "leer:notion": true, "leer:pdf": true, "correr:shell_box": true},
+  "notas": "Pocos créditos: solo coordina y revisa. Lo pesado va a Muse."
+}

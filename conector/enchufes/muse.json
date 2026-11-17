@@ -1,0 +1,10 @@
+{
+  "agente": "muse",
+  "descripcion": "Muse / Pecas: constructor principal (más créditos)",
+  "version": "1",
+  "puede": ["leer:github", "escribir:github_pr", "correr:shell_box", "llamar:groq"],
+  "no_puede": ["escribir:github_workflows", "crear:repos_por_actions", "leer:secretos_boveda"],
+  "transporte": ["bus_repo"],
+  "verificado": {},
+  "notas": "Declarado desde baterias-tokens/RELEVO.md y agente-cero-costo; falta que Muse lo confirme anunciándose."
+}
