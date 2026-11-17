@@ -12,8 +12,8 @@ Orquestador central: plano de control, reglas globales, memoria compartida, regi
 
 6. [Cómo trabajar con Mj](docs/COMO_TRABAJAR_CON_MJ.md) — contrato de interacción; no es un runner.
 7. [Guardianes operativos agnósticos](docs/GUARDIANES_OPERATIVOS_AGNOSTICOS.md) — funciones neutrales de control operativo.
-8. [Sombrero blanco](docs/SOMBRERO_BLANCO.md) — método transversal de admisión del input (hecho vs ruido); no es un control del Motor U6.
-9. [Controles especializados del Motor U6](docs/CONTROLES_MOTOR_U6.md) — Z90, sello, filtro 017, catálogo 244, StinkBox y candados de corrida; no son el sombrero blanco.
+8. [Filtros operativos transversales](docs/filtros_operativos/README.md) — métodos de trabajo (sombrero blanco, Copi, falacias, Beristáin, plugin pregunta, método de rigor); no son el motor, ni geometría, ni política.
+9. [Controles especializados del Motor U6](docs/CONTROLES_MOTOR_U6.md) — Z90, sello, filtro 017, catálogo 244, StinkBox y candados de corrida; no son los filtros transversales.
 10. [ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1](docs/ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1.md) — familia opcional activada solo por marca.
 11. [JSON Schema](schemas/sequential-verifiable-v1.schema.json) y [ejemplo X](examples/sequential-verifiable-v1.example.json).
 

@@ -9,7 +9,7 @@ Se extraen responsabilidades y comportamientos observables, no nombres internos,
 
 ## 2. Separación de capas
 - **Política cognitiva de interacción:** cómo interpretar instrucciones y trabajar con Mj; definida en `COMO_TRABAJAR_CON_MJ.md`.
-- **Método de admisión del input (sombrero blanco):** qué entra como hecho observable y qué se anota como ruido, en cualquier frente; definido en `SOMBRERO_BLANCO.md`. No es un control especializado de U6.
+- **Filtros operativos transversales:** métodos de trabajo (sombrero blanco, Copi, falacias, Beristáin, plugin pregunta, método de rigor) para cualquier input; definidos en `filtros_operativos/README.md`. No son controles especializados de U6 ni geometría ni política.
 - **Gobierno transversal:** autoridad, alcance, permisos, seguridad, concurrencia y evidencia.
 - **Control operativo:** supervisión de procesos, workers, colas, recursos, tiempos, reintentos, aislamiento y validación.
 - **Adaptadores de proyecto:** traducen señales y resultados locales a interfaces comunes.
@@ -74,4 +74,4 @@ Un control solo se etiqueta **AGNÓSTICO_VALIDADO** cuando:
 Hasta entonces, etiquetar **AGNÓSTICO_PROPUESTO**. La similitud de nombres o intención no demuestra independencia.
 
 ## 9. Relación con U6
-U6 es una fuente de experiencia y casos de prueba, no una dependencia del coordinador. Los controles especializados vigentes de ese motor (Z90, sello, filtro 017, catálogo 244, StinkBox y candados de corrida) están mapeados en `CONTROLES_MOTOR_U6.md` y no se confunden con el sombrero blanco. Los controles de latencia, revisión adversarial, consistencia, polaridad, hipótesis, patrones o cualquier otro mecanismo cognitivo propio permanecen especializados hasta que se formule una abstracción neutral y se pruebe fuera de U6. No modificar el motor ni el catálogo para desarrollar esta especificación.
+U6 es una fuente de experiencia y casos de prueba, no una dependencia del coordinador. Los controles especializados vigentes de ese motor (Z90, sello, filtro 017, catálogo 244, StinkBox y candados de corrida) están mapeados en `CONTROLES_MOTOR_U6.md` y no se confunden con los filtros operativos transversales (`filtros_operativos/README.md`). Los controles de latencia, revisión adversarial, consistencia, polaridad, hipótesis, patrones o cualquier otro mecanismo cognitivo propio permanecen especializados hasta que se formule una abstracción neutral y se pruebe fuera de U6. No modificar el motor ni el catálogo para desarrollar esta especificación.

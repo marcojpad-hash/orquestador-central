@@ -2,7 +2,7 @@
 **Versión:** 1.0  
 **Tipo:** mapa de controles propios del Motor U6, registrado en el orquestador para no confundirlos con los métodos transversales.  
 **Autoridad de implementación:** el repositorio del proyecto, `marcojpad-hash/motor-u6-storage`. Este documento no modifica el motor, no toca Engine V5 ni el catálogo 244, y no generaliza estos controles a otros frentes.  
-**No es el sombrero blanco.** El sombrero blanco es un método transversal del orquestador ([`SOMBRERO_BLANCO.md`](SOMBRERO_BLANCO.md)), válido para cualquier input humano. Los controles de esta página son del motor predictivo U6.
+**No es el sombrero blanco.** El sombrero blanco es un método transversal del orquestador ([`filtros_operativos/SOMBRERO_BLANCO.md`](filtros_operativos/SOMBRERO_BLANCO.md); índice: [`filtros_operativos/README.md`](filtros_operativos/README.md)), válido para cualquier input humano. Los controles de esta página son del motor predictivo U6.
 
 La [arquitectura del coordinador](ARQUITECTURA_COORDINADOR_CENTRAL.md) y los [guardianes operativos agnósticos](GUARDIANES_OPERATIVOS_AGNOSTICOS.md) ya distinguen controles universales de controles especializados de un dominio. Aquí se enumeran estos últimos para el Motor U6.
 
@@ -25,7 +25,7 @@ El catálogo de 244 patrones (`patterns_final_v14.json`) no se edita en este tra
 ## 5. PROTOCOL_NOISE_RE y campos probabilísticos prohibidos
 En el cableado actual del motor, una regex de ruido de protocolo y un conjunto de campos prohibidos (`probability`, `probabilidad`, `weight`, `peso`, `confidence`, `confianza`, `prob`, etc.) evitan que metadatos de armado o cifras de confianza se cuelen como hecho o como voto.
 
-Esto es higiene del tubo, no la función del sombrero blanco. Además, en la implementación cableada la regex incluye la cadena «sombrero blanco», lo cual es un defecto respecto del método transversal: se documenta en [`SOMBRERO_BLANCO.md`](SOMBRERO_BLANCO.md#7-estado-de-la-implementación-cableada-actual).
+Esto es higiene del tubo, no la función del sombrero blanco. Además, en la implementación cableada la regex incluye la cadena «sombrero blanco», lo cual es un defecto respecto del método transversal: se documenta en [`filtros_operativos/SOMBRERO_BLANCO.md`](filtros_operativos/SOMBRERO_BLANCO.md#7-estado-de-la-implementación-cableada-actual).
 
 ## 6. No tocar Engine V5 ni el catálogo 244
 Quedan protegidos, entre otros, `Engine_V5_CANONICO_SOLO.py` / la línea `MOTOR_V15_3_UNICO_*` y `patterns_final_v14.json`. No se alteran H, pesos, catálogo ni contratos predictivos desde el orquestador ni desde un “arreglo” de sombrero blanco. Una propuesta de cambio canónico se detiene y se eleva a Mj.
