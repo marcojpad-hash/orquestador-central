@@ -1,5 +1,5 @@
 # Filtros operativos transversales
-**Versión:** 1.1  
+**Versión:** 1.2  
 **Tipo:** índice de métodos de trabajo del orquestador.  
 **Alcance:** cualquier input humano y cualquier frente. No son el Motor U6, ni geometría, ni política, ni los controles especializados de ese motor (Z90, sello, filtro 017, catálogo 244, StinkBox), documentados en [`../CONTROLES_MOTOR_U6.md`](../CONTROLES_MOTOR_U6.md). Tampoco sustituyen a los [guardianes operativos agnósticos](../GUARDIANES_OPERATIVOS_AGNOSTICOS.md) (runner, cola, watchdog, sandbox).
 
@@ -25,6 +25,10 @@ Mj confirmó (17 de noviembre de 2026, hora de CDMX) que en su dictado «copy» 
 ## Regla de implementación
 
 [Deriva por simplificación](DERIVA_POR_SIMPLIFICACION.md). No es un filtro más de este índice: es la regla que obliga a no dar por cableada una pieza si, al simplificarla, perdió o cambió su función original sin decisión explícita de Mj.
+
+## Inventario del cableado
+
+El cableado real en el consumidor Motor U6 (qué detectan, si bloquean o solo marcan, si se pueden saltar, veredicto FIEL / DEGRADADA / CAMBIÓ DE FUNCIÓN) está en [INVENTARIO_GUARDIANES_PROTOCOLO.md](INVENTARIO_GUARDIANES_PROTOCOLO.md). Ese inventario no redefine los métodos: confronta el código con estas specs. Incluye también piezas hermanas que no tienen ficha propia aquí (pregunta detrás v2, sesgo de lectura, polaridad, autoevidencia, filtro 017, relleno 013).
 
 ## Pendiente, sin especificación
 
