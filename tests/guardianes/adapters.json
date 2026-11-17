@@ -1,0 +1,3 @@
+{
+  "_comment": "Register real guardian adapters as module:function. Empty means every relevant case is BLOCKED; never add a fake adapter to obtain PASS."
+}
