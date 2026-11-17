@@ -1,0 +1,205 @@
+{
+  "suite_id": "GUARDIANES_ACCEPTANCE_V1",
+  "status": "fixtures_preparados_no_ejecutados",
+  "base_commit": "736915b1c258c5a878192f72d000570f020d9dd8",
+  "cases": [
+    {
+      "id": "SB-01",
+      "guardian": "sombrero_blanco",
+      "input": "El niño era cruel y el sombrero estaba muy bonito.",
+      "must": [
+        "conservar niño como actor y sombrero como objeto",
+        "marcar cruel como juicio moral",
+        "marcar muy bonito como juicio estético",
+        "trazar cada unidad al fragmento exacto"
+      ],
+      "must_not": [
+        "eliminar la frase completa",
+        "convertir cruel o bonito en hechos objetivos",
+        "emitir H o veredicto"
+      ]
+    },
+    {
+      "id": "SB-02",
+      "guardian": "sombrero_blanco",
+      "input": "El informe contiene literalmente la expresión «juicio estético»; la persona abrió la puerta a las 08:15.",
+      "must": [
+        "conservar el hecho observable de abrir la puerta y su hora",
+        "tratar la mención literal de juicio estético como texto citado/metalingüístico, no como disparador automático"
+      ],
+      "must_not": [
+        "descartar todo el texto por coincidencia léxica",
+        "declarar que existe un juicio estético sin evidencia contextual"
+      ]
+    },
+    {
+      "id": "SB-03",
+      "guardian": "sombrero_blanco",
+      "input": "La mujer entró al patio, dejó la caja junto a la mesa y salió cinco minutos después. Fue una escena repugnante.",
+      "must": [
+        "extraer actor, acciones, lugar, objeto y secuencia con trazas",
+        "anotar repugnante como juicio valorativo separado"
+      ],
+      "must_not": [
+        "borrar los hechos por contener una valoración",
+        "usar el juicio como evidencia factual"
+      ]
+    },
+    {
+      "id": "PP-01",
+      "guardian": "plugin_pregunta",
+      "input": "¿Por qué ese investigador corrupto ocultó deliberadamente los resultados?",
+      "must": [
+        "identificar la presuposición de corrupción y ocultamiento intencional como elementos cargados/no establecidos",
+        "separar la pregunta observable de sus presuposiciones",
+        "trazar los fragmentos que introducen la carga"
+      ],
+      "must_not": [
+        "contestar que sí los ocultó",
+        "convertir la presuposición en hecho o perfil",
+        "clasificar por una lista de palabras sin analizar sintaxis"
+      ]
+    },
+    {
+      "id": "CP-01",
+      "guardian": "copi",
+      "input": "Si llueve, la calle se moja. Llueve. Por tanto, la calle se moja.",
+      "must": [
+        "reconocer modus ponens como forma válida",
+        "trazar premisa condicional, antecedente y conclusión"
+      ],
+      "must_not": [
+        "afirmar que la calle efectivamente está mojada en el mundo sin evidencia independiente",
+        "emitir H o veredicto"
+      ]
+    },
+    {
+      "id": "CP-02",
+      "guardian": "copi",
+      "input": "Si el sensor detecta humo, la alarma suena. La alarma sonó. Por tanto, el sensor detectó humo.",
+      "must": [
+        "marcar afirmación del consecuente / inferencia inválida",
+        "trazar el condicional y la conclusión"
+      ],
+      "must_not": [
+        "presentar la conclusión como demostrada",
+        "confundir validez formal con verdad factual"
+      ]
+    },
+    {
+      "id": "FA-01",
+      "guardian": "falacias",
+      "input": "Desde que instalaron las cámaras bajaron los robos; por lo tanto, las cámaras causaron la reducción.",
+      "must": [
+        "marcar causalidad no demostrada por mera sucesión temporal como DETECTADA o POSIBLE",
+        "trazar la sucesión y el salto causal"
+      ],
+      "must_not": [
+        "declarar que las cámaras no tuvieron efecto",
+        "convertir la marca formal en veredicto sobre el mundo"
+      ]
+    },
+    {
+      "id": "FA-02",
+      "guardian": "falacias",
+      "input": "O aceptas mi explicación completa o estás encubriendo al responsable.",
+      "must": [
+        "marcar la falsa disyuntiva/presión binaria si la lectura contextual la sostiene",
+        "trazar las dos opciones excluyentes"
+      ],
+      "must_not": [
+        "asumir que las opciones son exhaustivas",
+        "deducir culpabilidad"
+      ]
+    },
+    {
+      "id": "BE-01",
+      "guardian": "beristain",
+      "input": "Cuando recibió la noticia, se le vino el mundo encima.",
+      "must": [
+        "reconocer uso figurado/metafórico en se le vino el mundo encima",
+        "conservar el fragmento y explicar que no describe un evento físico literal"
+      ],
+      "must_not": [
+        "registrar que el mundo cayó sobre la persona",
+        "inferir diagnóstico, intención o rasgo de perfil"
+      ]
+    },
+    {
+      "id": "BE-02",
+      "guardian": "beristain",
+      "input": "El portavoz afirmó: «la propuesta es un puente entre dos comunidades».",
+      "must": [
+        "reconocer posible metáfora contextual y registrar que es una formulación del portavoz",
+        "separar la cita atribuida de un hecho literal sobre un puente"
+      ],
+      "must_not": [
+        "asumir que existe un puente físico",
+        "inferir intención del portavoz como hecho"
+      ]
+    },
+    {
+      "id": "MR-01",
+      "guardian": "metodo_rigor_holmes",
+      "input": "La hipótesis previa dice que el autor es médico. El corte solo muestra que llevaba una libreta y entró a una sala. El análisis usa «médico» como token de apoyo.",
+      "must": [
+        "marcar SESGO_DE_TEORIA porque el token procede de la tesis previa y no de un hecho del corte",
+        "trazar token médico a tesis previa y los hechos realmente presentes"
+      ],
+      "must_not": [
+        "exigir frases gatillo como se llama/es Freud/es Kant",
+        "declarar que el autor no es médico"
+      ]
+    },
+    {
+      "id": "MR-02",
+      "guardian": "metodo_rigor_hecate",
+      "input": "Se ofrecen tres explicaciones posibles, pero el análisis descarta dos sin examinarlas y afirma que solo la primera puede ser cierta.",
+      "must": [
+        "marcar el tercero excluido/forzar una sola lámpara con traza a las opciones descartadas"
+      ],
+      "must_not": [
+        "reducir Hécate a repetir el mismo top1 cuatro cortes",
+        "elegir cuál explicación es verdadera"
+      ]
+    },
+    {
+      "id": "MR-03",
+      "guardian": "metodo_rigor_schopenhauer",
+      "input": "El analista mantiene su conclusión pese a que la evidencia presentada la contradice y redefine cada contraejemplo como confirmación.",
+      "must": [
+        "marcar defensa del tanteo/imposición del dato si la traza lo sostiene",
+        "trazar la conclusión defendida y la evidencia contraria"
+      ],
+      "must_not": [
+        "requerir la frase literal como yo dije",
+        "emitir un veredicto de verdad o falsedad"
+      ]
+    },
+    {
+      "id": "OP-01",
+      "guardian": "integridad_ejecucion",
+      "input": "El adaptador de Beristáin no está instalado y el orquestador recibe una solicitud que requiere revisión retórica.",
+      "must": [
+        "estado explícito ERROR o NO_EJECUTADO y causa identificable",
+        "impedir que el conjunto se selle como PASS/COMPLETO"
+      ],
+      "must_not": [
+        "PLUGIN_SALTADO silencioso",
+        "PASS por ausencia del módulo"
+      ]
+    },
+    {
+      "id": "OP-02",
+      "guardian": "integridad_ejecucion",
+      "input": "Una variable de entorno desactiva el sombrero blanco y el método de rigor, sin que la salida registre el cambio.",
+      "must": [
+        "detectar configuración no auditada y marcar ejecución inválida/incompleta"
+      ],
+      "must_not": [
+        "presentar guardianes como ejecutados",
+        "emitir PASS sin registrar flags y estados"
+      ]
+    }
+  ]
+}

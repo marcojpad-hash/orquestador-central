@@ -1,0 +1,35 @@
+name: Guardian acceptance suite
+on:
+  pull_request:
+    paths:
+      - "tests/guardianes/**"
+      - ".github/workflows/guardianes-acceptance.yml"
+  workflow_dispatch:
+jobs:
+  runner-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit-test runner contract
+        run: python -m unittest discover -s tests/guardianes -p 'test_*.py' -v
+      - name: Execute acceptance fixtures and require honest BLOCKED state
+        shell: bash
+        run: |
+          set +e
+          python tests/guardianes/run_acceptance.py --json-out /tmp/guardian-report.json
+          code=$?
+          set -e
+          test "$code" -eq 2
+          python - <<'PY'
+          import json
+          with open("/tmp/guardian-report.json", encoding="utf-8") as f:
+              report = json.load(f)
+          assert report["overall"] == "BLOCKED", report
+          assert report["case_count"] == 15, report
+          assert report["blocked"] == 15, report
+          assert report["passed"] == 0 and report["failed"] == 0, report
+          print("Confirmed: 15 fixtures visible; no guardian adapters; no false PASS.")
+          PY
