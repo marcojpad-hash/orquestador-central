@@ -1,5 +1,5 @@
 # Deriva por simplificación
-**Versión:** 1.0  
+**Versión:** 1.1  
 **Tipo:** advertencia y regla operativa transversal del orquestador.  
 **Alcance:** el Motor U6 y cualquier consumidor o implementador de piezas del orquestador.  
 **No es:** un filtro de admisión del input, un permiso para recortar una función en nombre de la eficiencia, ni un sustituto de los [filtros operativos](README.md).
@@ -17,6 +17,16 @@ La separación hecho/juicio se perdió al cablearse. El detalle está en [SOMBRE
 - **Parche 010a, 6-oct-2026:** la misma lista también sobre textos de corte; sigue sin separar hecho de juicio, adjetivo ni figura, y no traza.
 
 Ninguna versión cableada implementó la función del 14-sep. El estado vigente de esa pieza es **NO CABLEADO**, no «aplicado».
+
+### Ejemplo documentado: método de rigor
+
+Holmes, Hécate y Schopenhauer se relajaron al cablearse. El detalle está en [METODO_RIGOR.md](METODO_RIGOR.md) (especificación funcional a cablear):
+
+- **14-sep-2026** (hora de CDMX): el método escrito pregunta el origen de cada token (hecho del corte vs tesis), el tercero excluido («¿forcé una sola lámpara?») y si el dato se defiende u obliga. Mj lo nombra ese mismo día como protocolo (t251u).
+- El plugin automático, con el mismo SHA desde ese dossier, solo busca tres cadenas: letrero idéntico en 4 cortes, «se llama»/Kant/Freud/Monroe, «como yo dije».
+- **17-nov-2026** (t1271u–t1272u, hora de CDMX): Mj confirma las funciones (Hécate = tercero excluido; Schopenhauer = no creerte todo, ¿el dato es tuyo, lo que infieres o lo que quieres obligar?) y señala que el bot lo cableó y lo dio por «consistente y concordante» semanas antes del 20 de octubre, sin verificar la función: lo volvió más laxo.
+
+El estado vigente de esa pieza es **DEGRADADA (relajada)**, no «método de rigor aplicado».
 
 ### Otros síntomas
 
