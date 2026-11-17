@@ -1,11 +1,13 @@
 # Filtros operativos transversales
-**Versión:** 1.0  
+**Versión:** 1.1  
 **Tipo:** índice de métodos de trabajo del orquestador.  
 **Alcance:** cualquier input humano y cualquier frente. No son el Motor U6, ni geometría, ni política, ni los controles especializados de ese motor (Z90, sello, filtro 017, catálogo 244, StinkBox), documentados en [`../CONTROLES_MOTOR_U6.md`](../CONTROLES_MOTOR_U6.md). Tampoco sustituyen a los [guardianes operativos agnósticos](../GUARDIANES_OPERATIVOS_AGNOSTICOS.md) (runner, cola, watchdog, sandbox).
 
 Son lentes de lectura y admisión: lógica, retórica y separación de hecho y ruido. Ninguno decide H ni emite veredicto. Si un proyecto los cablea (hoy, el Motor U6), ese cableado es un **consumidor**, no la definición del método.
 
 Las especificaciones de este apartado no afirman que exista ya un ejecutor automático transversal. Donde hay código, se declara en «Consumidores».
+
+La implementación de estos filtros está sujeta a la regla de [deriva por simplificación](DERIVA_POR_SIMPLIFICACION.md): recortar la función original porque «parece más eficiente» es fallo, no un atajo válido. Antes de dar por buena una pieza, hay que confrontarla con los checkpoints anteriores.
 
 ## Filtros con especificación
 
@@ -19,6 +21,10 @@ Las especificaciones de este apartado no afirman que exista ya un ejecutor autom
 | Método de rigor | Alarmas de rigor de lectura (Holmes, Hécate, Schopenhauer). | [METODO_RIGOR.md](METODO_RIGOR.md) |
 
 Mj confirmó (17 de noviembre de 2026, hora de CDMX) que en su dictado «copy» es Copi y «Very Stein» es Beristáin.
+
+## Regla de implementación
+
+[Deriva por simplificación](DERIVA_POR_SIMPLIFICACION.md). No es un filtro más de este índice: es la regla que obliga a no dar por cableada una pieza si, al simplificarla, perdió o cambió su función original sin decisión explícita de Mj.
 
 ## Pendiente, sin especificación
 

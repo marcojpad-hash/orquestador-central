@@ -72,11 +72,14 @@ Ninguna de las dos versiones parte frases, aparta juicio/adjetivo/figura ni traz
 
 **NO CABLEADO.** La implementación U6 actual no cumple esta especificación. Cualquier consumidor que diga «sombrero blanco aplicado» sin cumplir lo exigido en «Lo que debe hacer» y en «Criterios de aceptación» es falso.
 
+Este recorte es el ejemplo documentado de [deriva por simplificación](DERIVA_POR_SIMPLIFICACION.md). No se declara «sombrero blanco aplicado» hasta restaurar la función del 14-sep y pasarla con los tests de esta sección.
+
 ## 2. Lugar en el gobierno del orquestador
 - Complementa la [separación epistemológica](../REGLAS_OPERATIVAS_UNIVERSALES.md) (OBSERVADO / INFERIDO / PROPUESTO, etc.): el sombrero decide qué puede siquiera presentarse como hecho del input, antes de etiquetar afirmaciones de trabajo.
 - No sustituye a los [guardianes operativos agnósticos](../GUARDIANES_OPERATIVOS_AGNOSTICOS.md) (runner, cola, watchdog, sandbox). Es un control de admisión y lectura, no de ejecución.
 - No sustituye el [contrato de interacción con Mj](../COMO_TRABAJAR_CON_MJ.md).
 - Los controles del Motor U6 son de otro tipo y no se mezclan con este método.
+- El recorte de esta función al cablearla entra en la regla de [deriva por simplificación](DERIVA_POR_SIMPLIFICACION.md).
 
 ## 3. Principios
 
