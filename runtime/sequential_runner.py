@@ -16,6 +16,8 @@ def safe_path(value):
  p=(ROOT/value).resolve()
  if p!=ROOT and ROOT not in p.parents: raise ValueError(f"path escapes workspace: {value}")
  return p
+def is_path_like(value):
+ return "/" in value or value==".." or value.startswith("../")
 def validate(x):
  import jsonschema
  if x.get("$schema")!=SCHEMA_URI: raise ValueError("unrecognized or missing $schema contract marker")
@@ -24,8 +26,9 @@ def validate(x):
  errors=sorted(jsonschema.Draft202012Validator(schema).iter_errors(x),key=lambda e:list(map(str,e.path)))
  if errors: raise ValueError("JSON Schema violation: "+"; ".join(f"{list(e.path)}: {e.message}" for e in errors))
  if x.get("_contract")!="SEQUENTIAL-VERIFIABLE-v1": raise ValueError("wrong _contract")
-def check(c):
+def check(c,run_start=None,fresh=False):
  p=safe_path(c["path"])
+ if fresh and run_start is not None and p.exists() and p.stat().st_mtime<run_start: return False
  if c["kind"]=="exists": return p.exists()
  if c["kind"]=="min_bytes": return p.is_file() and p.stat().st_size>=int(c["value"])
  if c["kind"]=="contains": return p.is_file() and str(c["value"]) in p.read_text(encoding="utf-8")
@@ -37,6 +40,8 @@ def command(value):
  if len(argv)<2 or argv[0] not in ("python","python3"): raise ValueError("only direct python adapter commands are enabled")
  script=safe_path(argv[1])
  if not script.is_file() or script.suffix!=".py": raise ValueError(f"adapter not found: {argv[1]}")
+ for arg in argv[2:]:
+  if is_path_like(arg): safe_path(arg)
  argv[1]=str(script); return argv
 def run_command(value,log,step,phase,timeout):
  argv=command(value); emit(log,"command_start",step=step,phase=phase,argv=argv,timeout_seconds=timeout); start=time.monotonic()
@@ -47,7 +52,7 @@ def run_command(value,log,step,phase,timeout):
 def main():
  ap=argparse.ArgumentParser(); ap.add_argument("--input",default="examples/sequential-verifiable-v1.example.json"); ap.add_argument("--timeout",type=int,default=120); a=ap.parse_args()
  rid=dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")+"-"+str(os.getpid()); log=RUNS/rid/"events.jsonl"
- emit(log,"run_start",run_id=rid,input=a.input)
+ emit(log,"run_start",run_id=rid,input=a.input); run_start=time.time()
  try:
   x=json.loads(safe_path(a.input).read_text(encoding="utf-8")); validate(x); emit(log,"contract_valid",contract=x["_contract"],project=x["project"],steps=len(x["steps"]))
   for i,s in enumerate(x["steps"],1):
@@ -57,10 +62,11 @@ def main():
    if not run_command(s["action"],log,s["name"],"action",a.timeout): raise RuntimeError(f"action failed: {s['name']}")
    if not run_command(s["verify"],log,s["name"],"verify",a.timeout): raise RuntimeError(f"verification command failed: {s['name']}")
    for c in s["postconditions"]:
-    if not check(c): raise RuntimeError(f"postcondition failed in {s['name']}: {c}")
+    if not check(c,run_start=run_start,fresh=True): raise RuntimeError(f"postcondition failed in {s['name']}: {c}")
    emit(log,"step_passed",index=i,name=s["name"])
   out=x["expected_output"]; p=safe_path(out["path"])
   if out["type"]=="file" and (not p.is_file() or p.stat().st_size<int(out["min_length"])): raise RuntimeError("declared output missing or below min_length")
+  if out["type"]=="file" and p.stat().st_mtime<run_start: raise RuntimeError("declared output is stale (not produced by this run)")
   if out["type"]=="files":
    matches=list(p.glob("*")) if p.is_dir() else []
    if len(matches)<int(out["min_count"]): raise RuntimeError("declared output count below min_count")
