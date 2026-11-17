@@ -28,7 +28,7 @@ Mj confirmó (17 de noviembre de 2026, hora de CDMX) que en su dictado «copy» 
 
 ## Inventario del cableado
 
-El cableado real en el consumidor Motor U6 (qué detectan, si bloquean o solo marcan, si se pueden saltar, veredicto FIEL / DEGRADADA / CAMBIÓ DE FUNCIÓN) está en [INVENTARIO_GUARDIANES_PROTOCOLO.md](INVENTARIO_GUARDIANES_PROTOCOLO.md). Ese inventario no redefine los métodos: confronta el código con estas specs. Incluye también piezas hermanas que no tienen ficha propia aquí (pregunta detrás v2, sesgo de lectura, polaridad, autoevidencia, filtro 017, relleno 013).
+El cableado real en el consumidor Motor U6 (qué detectan, si bloquean o solo marcan, si se pueden saltar, veredicto FIEL / DEGRADADA / CAMBIÓ DE FUNCIÓN; y, en la sección de adicionales, NO CABLEADA) está en [INVENTARIO_GUARDIANES_PROTOCOLO.md](INVENTARIO_GUARDIANES_PROTOCOLO.md). Ese inventario no redefine los métodos: confronta el código con estas specs. Incluye piezas hermanas que no tienen ficha propia aquí (pregunta detrás v2, sesgo de lectura, polaridad, autoevidencia, filtro 017, relleno 013) y una sección de piezas adicionales y mal cableadas (CEB, Z90, candados, consulta dirigida, verificador de salida, traducción 021, deriva, trazabilidad temporal).
 
 ## Pendiente, sin especificación
 
