@@ -1,5 +1,5 @@
 # Sombrero blanco
-**Versión:** 1.0  
+**Versión:** 1.1  
 **Tipo:** método de trabajo y control operativo transversal del orquestador.  
 **Alcance:** cualquier input humano y cualquier frente (pregunta, relato, biografía, orden, auditoría, handoff). No pertenece a un proyecto ni al Motor U6. U6 es solo un consumidor más; su cableado actual se describe al final, no define el método.  
 **No es:** una herramienta del motor, un diccionario de palabras, un perfilador, un productor de veredictos o H, ni una copia de los controles especializados de U6 (Z90, sello, filtro 017, catálogo 244, StinkBox). Esos controles viven en [`../CONTROLES_MOTOR_U6.md`](../CONTROLES_MOTOR_U6.md).
@@ -12,6 +12,65 @@ Fuente de la función: plática de Mj con Puta 3 el **14 de septiembre de 2026**
 En varios mensajes de esa misma mañana (t292u, t293u, t299u) Mj introduce el texto en voz oral y a continuación avala un bloque más pulido, casi seguro pegado de otro modelo. Esas formulaciones se citan como material que ella le enseñó al orquestador ese día, no como transcripción de su habla literal en cada oración.
 
 Este documento forma parte de los [filtros operativos transversales](README.md).
+
+## ESPECIFICACIÓN FUNCIONAL A CABLEAR (objetivo)
+
+Esta es la función que debe cablearse. La referencia no es ninguna pieza actual del Motor U6.
+
+### Referencia
+
+La versión manual del **14 de septiembre de 2026** (hora de CDMX): ejercicio *El niño proletario* (Lamborghini), `FILTRO_TRAZA_BRUTO`, mensajes **t350u–t353u**. Ítems 01–06 son hechos; 07–10 son lecturas forzadas. Esa es la función. Ninguna versión cableada la implementó.
+
+### Lo que debe hacer
+
+Por cada frase del input:
+
+1. **Partirla en unidades observables:** QUIÉN (actor) / QUÉ (acción) / DÓNDE / EN QUÉ ORDEN (secuencia) / relación observable.
+2. **Apartar como ruido tipado:** juicio (moral o estético), adjetivo valorativo, metáfora o figura (lente [Beristáin](BERISTAIN.md)), etiqueta de género o escuela, intención atribuida, conclusión disfrazada de dato (lente [Copi](COPI.md)). Lo que dice un personaje se registra como *dicho*, no como hecho del mundo. **Esta última regla es del bot (11 de noviembre de 2026, hora de CDMX), no de Mj.**
+3. **Trazar** cada unidad al fragmento exacto del texto fuente (offset o cita literal).
+4. **No borrar el ruido:** anotarlo aparte. El ruido nunca alimenta H ni apuesta.
+5. **No decidir veredicto.**
+
+Formato de salida mínimo:
+
+```json
+{
+  "hechos": [
+    {"unidad": "niño", "clase": "quién (actor)", "traza": "el niño"},
+    {"unidad": "sombrero", "clase": "qué (objeto)", "traza": "el sombrero"}
+  ],
+  "ruido": [
+    {"fragmento": "cruel", "tipo": "juicio moral", "traza": "era cruel"},
+    {"fragmento": "muy bonito", "tipo": "juicio estético", "traza": "estaba muy bonito"}
+  ]
+}
+```
+
+Ejemplo: el input «el niño era cruel y el sombrero estaba muy bonito» produce esos dos hechos (niño = actor, sombrero = objeto) y esos dos ruidos (cruel = juicio moral; muy bonito = juicio estético).
+
+### Criterios de aceptación / tests
+
+- La frase «el niño era cruel y el sombrero estaba muy bonito» debe producir dos ruidos tipados (juicio moral y juicio estético), sin perder los dos hechos.
+- Un texto que diga literalmente «juicio estético» no debe tirarse entero por coincidir con una cadena fija.
+- Cada hecho lleva traza al fragmento fuente.
+- El `FILTRO_TRAZA_BRUTO` de Lamborghini (hechos 01–06 frente a lecturas forzadas 07–10) se reproduce como caso de prueba: misma separación, misma trazabilidad.
+
+### Versión actual vs debe hacer
+
+| | 27-sep-2026 (`_protocol_quality` en [`MOTOR_V15_3_UNICO_20260927.py`](https://github.com/marcojpad-hash/motor-u6-storage/blob/alterno/cameo-pesos/motor/motor/MOTOR_V15_3_UNICO_20260927.py)) | Parche 010a, 6-oct-2026 ([`sidecar_sombrero_blanco_filtro_v1.py`](https://github.com/marcojpad-hash/motor-u6-storage/blob/alterno/cameo-pesos/motor/motor/sidecar_sombrero_blanco_filtro_v1.py)) | Debe hacer |
+|---|---|---|---|
+| Unidad de trabajo | Lista de 5 frases, solo sobre la pregunta. De los cortes solo cuenta tokens (longitud de P/A/C). | La misma lista de 5 frases, también sobre textos de corte. Si coincide, tira el texto entero. | Parte cada frase en QUIÉN / QUÉ / DÓNDE / EN QUÉ ORDEN / relación observable. |
+| Juicio, adjetivo, figura | No los aparta. | No los aparta. | Los aparta como ruido tipado (lentes Beristáin y Copi). |
+| Traza al fragmento fuente | No. | No. | Obligatorio (offset o cita literal). |
+| Ruido anotado | `PROTOCOL_NOISE_RE` sobre la pregunta (incluye la cadena «sombrero blanco»). | La misma lista; «sombrero blanco» sigue en su propia lista de ruido. Excluye notas de armado. Reporta tokens fuera de catálogo. Revisa la salida. | El nombre del método no es ruido. El ruido se anota aparte; no se borra ni se usa para tirar el texto entero. Fuera de catálogo y notas de armado no son esta función. |
+| Sello de cumplimiento | Escribe `ENFORCED` y `facts_only_boundary=True` fijos, sin revisar. | Quitó el aprobado fijo. `can_decide_H=False`. | No decide veredicto. No declara cumplimiento si no hace lo de arriba. |
+| ¿Cumple esta spec? | No. | No. | — |
+
+Ninguna de las dos versiones parte frases, aparta juicio/adjetivo/figura ni traza cada unidad al texto fuente.
+
+### Estado
+
+**NO CABLEADO.** La implementación U6 actual no cumple esta especificación. Cualquier consumidor que diga «sombrero blanco aplicado» sin cumplir lo exigido en «Lo que debe hacer» y en «Criterios de aceptación» es falso.
 
 ## 2. Lugar en el gobierno del orquestador
 - Complementa la [separación epistemológica](../REGLAS_OPERATIVAS_UNIVERSALES.md) (OBSERVADO / INFERIDO / PROPUESTO, etc.): el sombrero decide qué puede siquiera presentarse como hecho del input, antes de etiquetar afirmaciones de trabajo.
@@ -107,7 +166,7 @@ Input: «el sombrero blanco está muy bonito».
 No entra como hecho que el sombrero «esté bonito». No hay veredicto, perfil ni H.
 
 ## 7. Estado de la implementación cableada actual
-Este método, en el orquestador, es una especificación de trabajo. No se afirma aquí que exista un ejecutor automático transversal que lo cumpla.
+La especificación a cablear, los tests y la comparación 27-sep / 010a están en [ESPECIFICACIÓN FUNCIONAL A CABLEAR](#especificación-funcional-a-cablear-objetivo). Este método, en el orquestador, es una especificación de trabajo. No se afirma aquí que exista un ejecutor automático transversal que lo cumpla.
 
 Un consumidor posterior es el **Motor U6**, en la rama `alterno/cameo-pesos` de `marcojpad-hash/motor-u6-storage`. Ahí el nombre quedó cableado a piezas de higiene de protocolo y de catálogo, no a esta función:
 
