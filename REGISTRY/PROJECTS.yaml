@@ -6,6 +6,7 @@ projects:
     status: known
     access: pending_explicit_installation
     protected: true
+    controls_ref: docs/CONTROLES_MOTOR_U6.md
     rules:
       - preserve_canonical_files
       - no_unapproved_changes_to_engine

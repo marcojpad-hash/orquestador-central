@@ -10,7 +10,14 @@ Orquestador central: plano de control, reglas globales, memoria compartida, regi
 4. [Registro de capacidades](docs/CAPACIDADES_MODELOS.md) — capacidades verificadas por interfaz y sesión.
 5. [Plantilla de handoff](docs/PLANTILLA_HANDOFF_MULTI_MODELO.md) — continuidad entre agentes.
 
-6. [Cómo trabajar con Mj](docs/COMO_TRABAJAR_CON_MJ.md) — contrato de interacción; no es un runner.\n7. [Guardianes operativos agnósticos](docs/GUARDIANES_OPERATIVOS_AGNOSTICOS.md) — funciones neutrales de control operativo.\n8. [ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1](docs/ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1.md) — familia opcional activada solo por marca.\n9. [JSON Schema](schemas/sequential-verifiable-v1.schema.json) y [ejemplo X](examples/sequential-verifiable-v1.example.json).\n\n## Inicio obligatorio para cualquier modelo
+6. [Cómo trabajar con Mj](docs/COMO_TRABAJAR_CON_MJ.md) — contrato de interacción; no es un runner.
+7. [Guardianes operativos agnósticos](docs/GUARDIANES_OPERATIVOS_AGNOSTICOS.md) — funciones neutrales de control operativo.
+8. [Sombrero blanco](docs/SOMBRERO_BLANCO.md) — método transversal de admisión del input (hecho vs ruido); no es un control del Motor U6.
+9. [Controles especializados del Motor U6](docs/CONTROLES_MOTOR_U6.md) — Z90, sello, filtro 017, catálogo 244, StinkBox y candados de corrida; no son el sombrero blanco.
+10. [ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1](docs/ARCHETYPE-SEQUENTIAL-VERIFIABLE-v1.md) — familia opcional activada solo por marca.
+11. [JSON Schema](schemas/sequential-verifiable-v1.schema.json) y [ejemplo X](examples/sequential-verifiable-v1.example.json).
+
+## Inicio obligatorio para cualquier modelo
 1. Leer las reglas operativas universales.
 2. Leer la arquitectura y el contrato multi-modelo.
 3. Declarar/actualizar capacidades en el registro.
