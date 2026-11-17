@@ -1,6 +1,6 @@
 # Suite de aceptación transversal para guardianes
 
-**Estado:** fixtures de aceptación preparados; todavía no son una implementación ni una ejecución de guardianes.  
+**Estado:** runner de aceptación implementado y ejecutado en CI; los guardianes semánticos siguen sin adaptadores conectados.  
 **Base documental:** inventario 1.1, commit `736915b1c258c5a878192f72d000570f020d9dd8`, y las especificaciones funcionales enlazadas abajo.  
 **Propósito:** disponer de entradas adversariales y resultados exigibles para comprobar el trabajo de cableado de cualquier consumidor, incluido el PR U6 de Grok, sin duplicar ni modificar ese trabajo.
 
@@ -65,4 +65,15 @@ Una implementación solo puede declararse **conforme** cuando:
 - demuestra que no se generó H ni se alteró el motor/catálogo;
 - publica recibo reproducible y pruebas automatizadas en verde.
 
-Esta carpeta no afirma que nada de lo anterior ya se haya ejecutado. Es la base independiente para hacerlo y para contrastar el PR de Grok cuando exista.
+El runner ya se ejecuta en GitHub Actions. Resultado actual: 5/5 pruebas unitarias del contrato en verde; los 15 casos semánticos quedan BLOCKED_NO_ADAPTER (0 PASS, 0 FAIL) porque todavía no se registraron implementaciones reales. Es una detección verificable de ausencia, no una aprobación de los guardianes. La suite sirve para contrastar el PR de Grok cuando esté disponible.
+
+
+## Ejecución actual verificada
+
+Workflow: [Guardian acceptance suite](https://github.com/marcojpad-hash/orquestador-central/actions/workflows/guardianes-acceptance.yml).
+
+- Run `44081272654`: SUCCESS.
+- Pruebas unitarias del runner: 5/5 PASS.
+- Fixtures cargados: 15.
+- Estado de ejecución semántica: 15 BLOCKED_NO_ADAPTER.
+- PASS semánticos: 0. No se han conectado adaptadores de guardianes.
