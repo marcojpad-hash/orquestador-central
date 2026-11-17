@@ -127,3 +127,13 @@ Un consumidor posterior es el **Motor U6**, en la rama `alterno/cameo-pesos` de 
 - Al reducirse a un diccionario de frases, hace lo que Mj rechazó en t204u y t207u: algo que se puede saltar reformulando.
 
 Ese cableado no redefine el método. Corregirlo, si se hace, pertenece al repositorio del motor, sin tocar Engine V5 ni el catálogo 244, y sin hacer de este documento un parche de U6.
+
+## 8. Lentes de apoyo (no diccionario)
+El sombrero blanco no carga un diccionario de palabras prohibidas. Para ver la **función** de cada palabra o frase (hecho vs juicio, literal vs figurado), se apoya en dos lentes hermanas de este apartado:
+
+- **[Beristáin](BERISTAIN.md)** aporta el catálogo para reconocer lo figurado (metáfora, hipérbole, lítote, etc.) y apartarlo como ruido, en vez de leerlo como hecho.
+- **[Copi](COPI.md)** aporta cómo detectar cuándo una frase mete una conclusión o un juicio disfrazado de dato (falacias, inferencias).
+
+Se usan como lentes, no como listas de palabras que se puedan saltar reformulando (t204u, t207u, t278u).
+
+**Gómez de Silva queda fuera**, por decisión de Mj (17 de noviembre de 2026, hora de CDMX): con Beristáin basta. No se integra a este filtro.
