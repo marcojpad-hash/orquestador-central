@@ -43,3 +43,24 @@ class EnunciativeContextTests(unittest.TestCase):
         attached = attach_context(blocks, report)
         self.assertEqual(attached[0]["bandera"], "LIMPIO")
         self.assertNotIn("contexto_lateral_enunciativo", attached[0].get("detalle", {}))
+
+    def test_cli_adapter_writes_observational_report(self):
+        import json
+        import subprocess
+        import sys
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = root / "input.json"
+            target = root / "out" / "report.json"
+            source.write_text(json.dumps({"records": [
+                {"text": "Ariadna es brillante. Ariadna es admirable.", "speaker": "input"},
+                {"text": "Bruno es mediocre. Bruno es un traidor.", "speaker": "input"}
+            ]}), encoding="utf-8")
+            script = Path(__file__).resolve().parent / "diagnostics" / "run_contexto_enunciativo.py"
+            proc = subprocess.run([sys.executable, str(script), "--input", str(source), "--output", str(target)],
+                                  capture_output=True, text=True, check=False)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            result = json.loads(target.read_text(encoding="utf-8"))
+            self.assertTrue(any(s["tipo"] == "ASIMETRIA_VALORATIVA_ENTRE_ACTORES" for s in result["senales"]))
+            self.assertFalse(result["candados"]["can_decide_H"])
