@@ -27,7 +27,7 @@ No se infiere la identidad real de un hablante por el estilo. Se conserva la dif
 Estético, valorativo, moral, predictivo, especulativo, normativo, causal, intencional, epistémico y comparativo. Se registra fragmento, término, tipo, polaridad y procedencia.
 
 ### Funciones del lenguaje
-Etiquetas heurísticas de Jakobson (referencial, emotiva, conativa, fática, metalingüística y poética) y metafunciones de Halliday (ideacional, interpersonal y textual). No se atribuye a Saussure la taxonomía de Jakobson.
+Funciones de Bühler (representativa, expresiva y apelativa), etiquetas heurísticas de Jakobson (referencial, emotiva, conativa, fática, metalingüística y poética) y metafunciones de Halliday (ideacional, interpersonal y textual). Saussure aporta la teoría del signo y la distinción lengua/habla, no esta taxonomía funcional.
 
 ### Comportamiento discursivo
 Reiteración de cargas valorativas, asimetría entre actores, encuadre adversarial y cierre de alternativas. La omisión selectiva requiere un corpus de contraste; no se infiere de un texto aislado.
