@@ -1,1 +1,1 @@
-"""Agnostic operational diagnostics."""\n
+"""Agnostic operational diagnostics."""
