@@ -1,4 +1,4 @@
-import json, unittest
+import json, tempfile, unittest
 from pathlib import Path
 from sequential_runner import validate, check, SCHEMA_URI
 ROOT=Path(__file__).resolve().parents[1]
@@ -17,8 +17,6 @@ class ContractTests(unittest.TestCase):
  def test_pre_post_contract_fields_required(self):
   self.x["steps"][0].pop("postconditions")
   with self.assertRaises(ValueError): validate(self.x)
-if __name__=="__main__": unittest.main()
-
 # Lateral observacional: casos de aceptación compartidos con la adaptación U6.
 from diagnostics.lateral_contexto_enunciativo import analyze, attach_context
 
@@ -64,3 +62,6 @@ class EnunciativeContextTests(unittest.TestCase):
             result = json.loads(target.read_text(encoding="utf-8"))
             self.assertTrue(any(s["tipo"] == "ASIMETRIA_VALORATIVA_ENTRE_ACTORES" for s in result["senales"]))
             self.assertFalse(result["candados"]["can_decide_H"])
+
+if __name__ == "__main__":
+    unittest.main()
