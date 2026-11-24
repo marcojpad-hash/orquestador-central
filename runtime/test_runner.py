@@ -27,13 +27,14 @@ class EnunciativeContextTests(unittest.TestCase):
     def test_repeated_praise_and_adversarial_frame_are_observed_not_judged(self):
         report = analyze([
             {"text": "Ariadna es brillante. Ariadna es admirable.", "origin": "question", "speaker": "input"},
-            {"text": "Bruno es mediocre y un traidor.", "origin": "source_note", "speaker": "input"},
+            {"text": "Bruno es mediocre. Bruno es un traidor.", "origin": "source_note", "speaker": "input"},
         ])
         self.assertTrue(any(s["tipo"] == "CARGA_VALORATIVA_REITERADA" for s in report["senales"]))
         self.assertTrue(any(s["tipo"] == "ENMARCADO_ADVERSARIAL" for s in report["senales"]))
+        self.assertTrue(any(s["tipo"] == "ASIMETRIA_VALORATIVA_ENTRE_ACTORES" for s in report["senales"]))
         self.assertFalse(any(s["tipo"] == "FAVORITISMO" for s in report["senales"]))
         self.assertFalse(report["candados"]["can_decide_H"])
-        self.assertEqual(len(report["observaciones"]), 3)
+        self.assertEqual(len(report["observaciones"]), 4)
 
     def test_neutral_input_has_no_value_pattern_and_context_does_not_change_flags(self):
         report = analyze([{"text": "La reunión comenzó a las nueve y terminó a las diez.", "origin": "facts"}])
