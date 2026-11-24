@@ -33,6 +33,20 @@ Se extraen responsabilidades y comportamientos observables, no nombres internos,
 | Recuperación | Reanuda desde el último punto seguro o revierte efectos parciales. | Ante fallo recuperable o interrupción. | Punto de recuperación, acciones y estado final. |
 | Auditor independiente | Revisa salida y evidencia sin depender del relato del ejecutor. | Cuando riesgo o contrato exige separación de funciones. | Dictamen y criterios comprobados. |
 
+## 3.1 Guardianes diagnósticos de input
+
+Además de los controles de runtime, el plano central puede ejecutar guardianes observacionales que leen el input y producen señales trazables para otros controles. No sustituyen el gobierno, el runner ni los filtros hermanos.
+
+**Contexto enunciativo** (`LATERAL_CONTEXTO_ENUNCIATIVO_V1_0`): registra juicios expresados, atribuciones, orientación valorativa, reiteración, asimetrías entre actores, encuadre adversarial, cierre discursivo y funciones lingüísticas. Conserva la diferencia entre:
+- hecho sobre el objeto;
+- hecho observable de que el enunciador emitió una valoración;
+- patrón discursivo que requiere comparación;
+- hipótesis posterior que necesita evidencia adicional.
+
+Su salida es contexto para Sherlock/Holmes, Hécate, Schopenhauer, Falacias, Copi, Beristáin y Plugin Pregunta. No diagnostica personas, no declara favoritismo, no infiere motivaciones, no decide resultados y no altera el input. Corre en paralelo con Sombrero Blanco: no modifica su admisión factual.
+
+La capacidad se mantiene en dos implementaciones: clon U6, adaptado a su contrato y conectado a su paquete de guardianes; clon agnóstico, disponible al coordinador y a otros proyectos mediante interfaz neutral. Clonar no significa retirar ni desconectar la implementación U6.
+
 ## 4. Ciclo de control
 1. **Admisión:** identificar objetivo, autoridad, alcance, entrada, salida y riesgo.
 2. **Preparación:** validar contrato, permisos, recursos y dependencias.
