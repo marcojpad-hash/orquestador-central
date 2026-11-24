@@ -18,3 +18,27 @@ class ContractTests(unittest.TestCase):
   self.x["steps"][0].pop("postconditions")
   with self.assertRaises(ValueError): validate(self.x)
 if __name__=="__main__": unittest.main()
+
+# Lateral observacional: casos de aceptación compartidos con la adaptación U6.
+from diagnostics.lateral_contexto_enunciativo import analyze, attach_context
+
+
+class EnunciativeContextTests(unittest.TestCase):
+    def test_repeated_praise_and_adversarial_frame_are_observed_not_judged(self):
+        report = analyze([
+            {"text": "Ariadna es brillante. Ariadna es admirable.", "origin": "question", "speaker": "input"},
+            {"text": "Bruno es mediocre y un traidor.", "origin": "source_note", "speaker": "input"},
+        ])
+        self.assertTrue(any(s["tipo"] == "CARGA_VALORATIVA_REITERADA" for s in report["senales"]))
+        self.assertTrue(any(s["tipo"] == "ENMARCADO_ADVERSARIAL" for s in report["senales"]))
+        self.assertFalse(any(s["tipo"] == "FAVORITISMO" for s in report["senales"]))
+        self.assertFalse(report["candados"]["can_decide_H"])
+        self.assertEqual(len(report["observaciones"]), 3)
+
+    def test_neutral_input_has_no_value_pattern_and_context_does_not_change_flags(self):
+        report = analyze([{"text": "La reunión comenzó a las nueve y terminó a las diez.", "origin": "facts"}])
+        self.assertEqual(report["senales"], [])
+        blocks = [{"guardian": "SHERLOCK_RIGOR", "bandera": "LIMPIO"}]
+        attached = attach_context(blocks, report)
+        self.assertEqual(attached[0]["bandera"], "LIMPIO")
+        self.assertNotIn("contexto_lateral_enunciativo", attached[0].get("detalle", {}))
