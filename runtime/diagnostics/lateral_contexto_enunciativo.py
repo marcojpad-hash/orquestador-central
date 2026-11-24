@@ -165,7 +165,7 @@ def analyze(records: list[dict[str, Any]]) -> dict[str, Any]:
 def attach_context(blocks: list[dict[str, Any]], report: dict[str, Any]) -> list[dict[str, Any]]:
     """Attach traceable references to sibling controls without changing their decisions."""
     refs = {
-        "SHERLOCK_RIGOR": {"CARGA_VALORATIVA_REITERADA", "ASIMETRIA_VALORATIVA_ENTRE_ACTORES"},
+        "SHERLOCK_RIGOR": {"CARGA_VALORATIVA_REITERADA", "ASIMETRIA_VALORATIVA_ENTRE_ACTORES", "CIERRE_DISCURSIVO_DE_ALTERNATIVAS"},
         "HECATE": {"CIERRE_DISCURSIVO_DE_ALTERNATIVAS"},
         "SCHOPENHAUER": {"CARGA_VALORATIVA_REITERADA", "ASIMETRIA_VALORATIVA_ENTRE_ACTORES"},
         "FALACIAS": {"ENMARCADO_ADVERSARIAL", "CIERRE_DISCURSIVO_DE_ALTERNATIVAS"},
