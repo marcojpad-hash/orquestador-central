@@ -1,0 +1,14 @@
+{
+  "records": [
+    {
+      "text": "Ariadna es brillante. Ariadna es admirable.",
+      "origin": "question",
+      "speaker": "INPUT_ORIGIN"
+    },
+    {
+      "text": "Bruno es mediocre. Bruno es un traidor.",
+      "origin": "source_note",
+      "speaker": "INPUT_ORIGIN"
+    }
+  ]
+}
