@@ -38,6 +38,30 @@ SUBJECT = re.compile(r"^(.{1,55}?)\s+(?:es|fue|parece|resulta|será|debe|deberí
 SENTENCE_SPLIT = re.compile(r"(?<=[.!?])\s+")
 
 
+# Motivos de activación: familias de marcadores que el propio lateral declara.
+# La puerta es barata y explícita: si ningún marcador dispara, el input es
+# neutro o puramente factual y la ruta pasa en silencio (SIN_ACTIVACION).
+def debe_observar(texto: str) -> tuple[bool, str]:
+    """Decide si el input trae contenido enunciativo que observar.
+
+    Devuelve (activa, motivo). El motivo nombra la familia que disparó, para
+    que quede legible en el reporte. No clasifica ni juzga: solo detecta la
+    presencia de los marcadores que el propio lateral declara en
+    JUDGMENT_RULES, CONATIVE, EXCLUSION y ADVERSARIAL.
+    """
+    texto = texto or ""
+    for kind, (pattern, _subtype) in JUDGMENT_RULES.items():
+        if re.search(pattern, texto, re.I):
+            return True, f"juicio {kind}"
+    if CONATIVE.search(texto):
+        return True, "funcion apelativa (conativa)"
+    if EXCLUSION.search(texto):
+        return True, "cierre discursivo (exclusion de alternativas)"
+    if ADVERSARIAL.search(texto):
+        return True, "encuadre adversarial"
+    return False, "sin marcadores enunciativos (input neutro o factual)"
+
+
 def _polarity(fragment: str) -> str:
     words = set(re.findall(r"[a-záéíóúñ]+", fragment.lower()))
     pos, neg = bool(words & POSITIVE), bool(words & NEGATIVE)
@@ -152,9 +176,10 @@ def analyze(records: list[dict[str, Any]]) -> dict[str, Any]:
                         "estado": "OBSERVACION_PARA_REVISION"})
 
     routes = {
-        "SHERLOCK_RIGOR": ["seleccion_asimetrica", "tesis_previa_vs_hechos"],
-        "HECATE": ["exclusion_de_alternativas"],
-        "SCHOPENHAUER": ["atribucion_de_intencion", "certeza_o_duda"],
+        # Hecate, Holmes y Schopenhauer viven dentro del bloque SHERLOCK_RIGOR
+        # (guardianes_control_v1.py, linea 313); sus rutas van bajo esa clave.
+        "SHERLOCK_RIGOR": ["seleccion_asimetrica", "tesis_previa_vs_hechos",
+                           "exclusion_de_alternativas", "atribucion_de_intencion", "certeza_o_duda"],
         "FALACIAS": ["atribucion_causal", "cierre_discursivo"],
         "LOGICA_COPI": ["comparacion_de_premisas", "atribucion_causal"],
         "TROPOS_BERISTAIN": ["marco_adversarial", "funcion_poetica"],
@@ -179,8 +204,6 @@ def attach_context(blocks: list[dict[str, Any]], report: dict[str, Any]) -> list
     """Attach traceable references to sibling controls without changing their decisions."""
     refs = {
         "SHERLOCK_RIGOR": {"CARGA_VALORATIVA_REITERADA", "ASIMETRIA_VALORATIVA_ENTRE_ACTORES", "CIERRE_DISCURSIVO_DE_ALTERNATIVAS", "ATRIBUCION_CAUSAL_O_INTENCIONAL"},
-        "HECATE": {"CIERRE_DISCURSIVO_DE_ALTERNATIVAS"},
-        "SCHOPENHAUER": {"CARGA_VALORATIVA_REITERADA", "ASIMETRIA_VALORATIVA_ENTRE_ACTORES", "ATRIBUCION_CAUSAL_O_INTENCIONAL"},
         "FALACIAS": {"ENMARCADO_ADVERSARIAL", "CIERRE_DISCURSIVO_DE_ALTERNATIVAS", "ATRIBUCION_CAUSAL_O_INTENCIONAL"},
         "LOGICA_COPI": {"ASIMETRIA_VALORATIVA_ENTRE_ACTORES", "ATRIBUCION_CAUSAL_O_INTENCIONAL"},
         "TROPOS_BERISTAIN": {"ENMARCADO_ADVERSARIAL", "FUNCION_POETICA_OBSERVADA"},

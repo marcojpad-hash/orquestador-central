@@ -46,6 +46,33 @@ El lateral corre en paralelo con Sombrero Blanco. No sustituye, modifica ni cond
 
 La adaptación U6 se integra en el paquete de guardianes posterior al predictor. La copia agnóstica se ejecuta en el plano central y puede ser consumida por cualquier proyecto mediante un adaptador. Las dos implementaciones conservan el mismo contrato y se prueban con casos compartidos; ninguna sustituye a la otra.
 
+### 5.1 Ruta condicional
+
+En el plano central el lateral no corre siempre: se activa solo cuando el input trae contenido enunciativo que observar. La ruta es el adaptador `runtime/diagnostics/ruta_contexto_enunciativo.py`, invocable como paso del runner secuencial. El predicado `debe_observar()` decide con los propios marcadores del lateral — juicios de `JUDGMENT_RULES`, función apelativa (`CONATIVE`), cierre discursivo (`EXCLUSION`) y encuadre adversarial (`ADVERSARIAL`) — y nombra en el motivo la familia que disparó, para que la activación quede legible en el reporte.
+
+Dos estados posibles, ambos con salida 0 (un input neutro no es un fallo y no detiene la corrida):
+- `ACTIVA`: el input trae contenido enunciativo; se ejecuta `analyze()` y se escribe el reporte completo.
+- `SIN_ACTIVACION`: el input es neutro o puramente factual; se escribe un reporte mínimo y la ruta pasa en silencio.
+
+Fragmento del paso para el contrato secuencial:
+
+```json
+{
+  "name": "contexto-enunciativo-condicional",
+  "action": "python runtime/diagnostics/ruta_contexto_enunciativo.py --input artifacts/input.txt --out artifacts/contexto-enunciativo.json",
+  "expected": "Reporte de contexto enunciativo (ACTIVA o SIN_ACTIVACION)",
+  "verify": "python runtime/verify_file.py --path artifacts/contexto-enunciativo.json --min-bytes 1",
+  "retry_safe": true,
+  "preconditions": [{"kind": "exists", "path": "artifacts/input.txt"}],
+  "postconditions": [
+    {"kind": "exists", "path": "artifacts/contexto-enunciativo.json"},
+    {"kind": "min_bytes", "path": "artifacts/contexto-enunciativo.json", "value": 1}
+  ]
+}
+```
+
+Los filtros rígidos y verificables (validación de contrato, resto de adaptadores, CI) no se tocan y siguen corriendo siempre. El lateral sigue siendo observacional: no decide ni veta nada.
+
 ## 6. Límites epistemológicos
 
 - Una valoración expresada es un dato del discurso, no una propiedad demostrada del objeto.
