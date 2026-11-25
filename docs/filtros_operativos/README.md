@@ -19,6 +19,7 @@ La implementación de estos filtros está sujeta a la regla de [deriva por simpl
 | Beristáin | Detecta tropos y figuras para que lo figurado no se lea como hecho. | [BERISTAIN.md](BERISTAIN.md) |
 | Plugin pregunta | Clasifica la estructura de la pregunta antes de usarla como evidencia. | [PLUGIN_PREGUNTA.md](PLUGIN_PREGUNTA.md) |
 | Método de rigor | Alarmas de rigor de lectura (Holmes, Hécate, Schopenhauer). | [METODO_RIGOR.md](METODO_RIGOR.md) |
+| Contexto enunciativo | Registra juicios, orientación valorativa y patrones discursivos; aporta contexto a otros controles sin emitir veredictos. | [ORIENTACION_ENUNCIATIVA.md](ORIENTACION_ENUNCIATIVA.md) |
 
 Mj confirmó (17 de noviembre de 2026, hora de CDMX) que en su dictado «copy» es Copi y «Very Stein» es Beristáin.
 
